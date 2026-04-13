@@ -90,25 +90,32 @@ export default function DashboardPage() {
       label: "Total Jobs",
       value: totalJobs,
       icon: Briefcase,
-      color: "bg-zinc-100 dark:bg-zinc-800",
+      color:
+        "bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),inset_0_-1px_0_rgba(0,0,0,0.15)]",
     },
     {
       label: "Scheduled Today",
       value: scheduledToday,
       icon: Calendar,
-      color: "bg-blue-50 dark:bg-blue-950/30",
+      color:
+        "bg-blue-50 dark:bg-blue-950/30 border border-blue-200/80 dark:border-blue-800/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),inset_0_-1px_0_rgba(0,0,0,0.15)]",
+      iconColor: "text-blue-600 dark:text-blue-400",
     },
     {
       label: "In Progress",
       value: inProgress,
       icon: Clock,
-      color: "bg-amber-50 dark:bg-amber-950/30",
+      color:
+        "bg-amber-50 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),inset_0_-1px_0_rgba(0,0,0,0.15)]",
+      iconColor: "text-amber-600 dark:text-amber-400",
     },
     {
       label: "Completed This Week",
       value: completedThisWeek,
       icon: CheckCircle2,
-      color: "bg-emerald-50 dark:bg-emerald-950/30",
+      color:
+        "bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),inset_0_-1px_0_rgba(0,0,0,0.15)]",
+      iconColor: "text-emerald-600 dark:text-emerald-400",
     },
   ];
 
@@ -137,7 +144,9 @@ export default function DashboardPage() {
         {stats.map((stat) => (
           <Card key={stat.label} className="flex items-start gap-4">
             <div className={`rounded-xl p-3 ${stat.color}`}>
-              <stat.icon className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
+              <stat.icon
+                className={`h-5 w-5 ${stat.iconColor || "text-zinc-600 dark:text-zinc-400"}`}
+              />
             </div>
             <div>
               <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">

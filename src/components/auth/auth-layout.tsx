@@ -61,7 +61,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
   const isSignIn = pathname.startsWith("/sign-in");
 
   return (
-    <div className="relative min-h-screen w-full bg-zinc-950 text-white">
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-zinc-950 text-white">
       {/* Subtle grid background */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.03]"

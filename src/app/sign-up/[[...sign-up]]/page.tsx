@@ -21,9 +21,7 @@ export default function SignUpPage() {
       <div className="mb-6 rounded-xl border border-white/5 bg-white/2 p-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-zinc-300">
-              Just exploring?
-            </p>
+            <p className="text-sm font-medium text-zinc-300">Just exploring?</p>
             <p className="mt-0.5 text-xs text-zinc-500">
               Try a pre-loaded demo account instead.
             </p>

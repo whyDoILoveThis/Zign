@@ -42,7 +42,13 @@ interface CalendarJob {
 
 export default function SchedulePage() {
   return (
-    <Suspense fallback={<div className="flex justify-center py-12"><Spinner size="lg" /></div>}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-12">
+          <Spinner size="lg" />
+        </div>
+      }
+    >
       <ScheduleContent />
     </Suspense>
   );
@@ -54,7 +60,11 @@ function ScheduleContent() {
 
   const [currentMonth, setCurrentMonth] = useState(() => {
     if (dateParam) {
-      try { return parseISO(dateParam); } catch { /* ignore */ }
+      try {
+        return parseISO(dateParam);
+      } catch {
+        /* ignore */
+      }
     }
     return new Date();
   });
@@ -62,7 +72,11 @@ function ScheduleContent() {
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState<Date | null>(() => {
     if (dateParam) {
-      try { return parseISO(dateParam); } catch { /* ignore */ }
+      try {
+        return parseISO(dateParam);
+      } catch {
+        /* ignore */
+      }
     }
     return null;
   });

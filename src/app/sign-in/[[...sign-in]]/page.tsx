@@ -104,7 +104,9 @@ export default function SignInPage() {
             disabled={loading !== null}
             className={`group relative flex w-full cursor-pointer items-center gap-4 overflow-hidden rounded-xl border bg-linear-to-r p-4 transition-all disabled:opacity-50 ${account.border} ${account.gradient}`}
           >
-            <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${account.iconBg}`}>
+            <div
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${account.iconBg}`}
+            >
               <span className={`text-sm font-bold ${account.iconText}`}>
                 {account.label[0]}
               </span>
@@ -131,9 +133,7 @@ export default function SignInPage() {
             </div>
           </button>
         ))}
-        {error && (
-          <p className="text-center text-xs text-red-400">{error}</p>
-        )}
+        {error && <p className="text-center text-xs text-red-400">{error}</p>}
       </div>
 
       {/* Divider */}

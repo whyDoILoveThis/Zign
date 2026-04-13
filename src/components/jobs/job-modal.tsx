@@ -264,7 +264,9 @@ export function JobModal({ open, onClose, onSuccess, initialData }: Props) {
                         setForm((prev) => ({
                           ...prev,
                           installer_ids: checked
-                            ? prev.installer_ids.filter((id) => id !== installer.$id)
+                            ? prev.installer_ids.filter(
+                                (id) => id !== installer.$id,
+                              )
                             : [...prev.installer_ids, installer.$id],
                         }))
                       }

@@ -170,7 +170,11 @@ export default function JobsPage() {
       ) : (
         <div className="mt-6 flex flex-col gap-3">
           {jobs.map((job) => (
-            <Link key={job.$id} href={`/dashboard/jobs/${job.$id}`} className="block">
+            <Link
+              key={job.$id}
+              href={`/dashboard/jobs/${job.$id}`}
+              className="block"
+            >
               <Card
                 padding={false}
                 className="group cursor-pointer transition-all hover:border-zinc-300 hover:shadow-md dark:hover:border-zinc-600"
@@ -218,7 +222,7 @@ export default function JobsPage() {
                             .map((a) =>
                               a.installer
                                 ? `${a.installer.first_name} ${a.installer.last_name}`
-                                : "Unassigned"
+                                : "Unassigned",
                             )
                             .join(", ")}
                         </span>
@@ -230,48 +234,61 @@ export default function JobsPage() {
                   <ChevronRight className="h-5 w-5 shrink-0 text-zinc-300 transition-colors group-hover:text-zinc-500 dark:text-zinc-600 dark:group-hover:text-zinc-400" />
                 </div>
 
-                {job.attachments?.length > 0 && (() => {
-                  const photos = job.attachments.filter((a) => a.file_type.startsWith("image/"));
-                  const docs = job.attachments.filter((a) => !a.file_type.startsWith("image/"));
-                  return (
-                    <div className="border-t border-zinc-100 px-5 py-3 dark:border-zinc-800">
-                      <div className="flex flex-wrap items-center gap-3">
-                        {photos.length > 0 && (
-                          <div className="flex items-center gap-2">
-                            {photos.slice(0, 5).map((photo) => (
-                              <div
-                                key={photo.$id}
-                                className="relative h-10 w-10 overflow-hidden rounded-md border border-zinc-200 bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800"
-                              >
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                  src={photo.file_url}
-                                  alt={photo.file_name}
-                                  className="h-full w-full object-cover"
-                                />
-                              </div>
-                            ))}
-                            {photos.length > 5 && (
-                              <span className="text-xs text-zinc-400">+{photos.length - 5}</span>
-                            )}
-                          </div>
-                        )}
-                        {docs.length > 0 && (
-                          <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
-                            <FileText className="h-3.5 w-3.5" />
-                            <span>{docs.length} document{docs.length !== 1 ? "s" : ""}</span>
-                          </div>
-                        )}
-                        {photos.length > 0 && docs.length === 0 && (
-                          <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
-                            <ImageIcon className="h-3.5 w-3.5" />
-                            <span>{photos.length} photo{photos.length !== 1 ? "s" : ""}</span>
-                          </div>
-                        )}
+                {job.attachments?.length > 0 &&
+                  (() => {
+                    const photos = job.attachments.filter((a) =>
+                      a.file_type.startsWith("image/"),
+                    );
+                    const docs = job.attachments.filter(
+                      (a) => !a.file_type.startsWith("image/"),
+                    );
+                    return (
+                      <div className="border-t border-zinc-100 px-5 py-3 dark:border-zinc-800">
+                        <div className="flex flex-wrap items-center gap-3">
+                          {photos.length > 0 && (
+                            <div className="flex items-center gap-2">
+                              {photos.slice(0, 5).map((photo) => (
+                                <div
+                                  key={photo.$id}
+                                  className="relative h-10 w-10 overflow-hidden rounded-md border border-zinc-200 bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800"
+                                >
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    src={photo.file_url}
+                                    alt={photo.file_name}
+                                    className="h-full w-full object-cover"
+                                  />
+                                </div>
+                              ))}
+                              {photos.length > 5 && (
+                                <span className="text-xs text-zinc-400">
+                                  +{photos.length - 5}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                          {docs.length > 0 && (
+                            <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
+                              <FileText className="h-3.5 w-3.5" />
+                              <span>
+                                {docs.length} document
+                                {docs.length !== 1 ? "s" : ""}
+                              </span>
+                            </div>
+                          )}
+                          {photos.length > 0 && docs.length === 0 && (
+                            <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
+                              <ImageIcon className="h-3.5 w-3.5" />
+                              <span>
+                                {photos.length} photo
+                                {photos.length !== 1 ? "s" : ""}
+                              </span>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })()}
+                    );
+                  })()}
               </Card>
             </Link>
           ))}

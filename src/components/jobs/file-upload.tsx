@@ -213,7 +213,10 @@ export function FileUpload({
                   src={photo.file_url}
                   alt={photo.file_name}
                   className="h-full w-full cursor-pointer object-cover transition-transform group-hover:scale-105"
-                  onClick={() => { setPreviewIndex(photos.indexOf(photo)); setZoom(1); }}
+                  onClick={() => {
+                    setPreviewIndex(photos.indexOf(photo));
+                    setZoom(1);
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                 <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between p-2 opacity-0 transition-opacity group-hover:opacity-100">
@@ -313,7 +316,8 @@ export function FileUpload({
                 {photos[previewIndex].file_name}
               </p>
               <p className="text-xs text-zinc-400">
-                {categoryLabels[photos[previewIndex].category]} · {previewIndex + 1} of {photos.length}
+                {categoryLabels[photos[previewIndex].category]} ·{" "}
+                {previewIndex + 1} of {photos.length}
               </p>
             </div>
             <div className="flex items-center gap-1">

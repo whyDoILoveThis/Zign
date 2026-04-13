@@ -16,27 +16,32 @@ const features = [
   {
     icon: Briefcase,
     title: "Job Management",
-    description: "Create, assign, and track sign installation jobs from start to finish.",
+    description:
+      "Create, assign, and track sign installation jobs from start to finish.",
   },
   {
     icon: Calendar,
     title: "Smart Scheduling",
-    description: "Visual calendar with drag-and-drop dispatch for your entire crew.",
+    description:
+      "Visual calendar with drag-and-drop dispatch for your entire crew.",
   },
   {
     icon: MapPin,
     title: "Map & Routing",
-    description: "See all jobs on a live map. One-tap navigation to every site.",
+    description:
+      "See all jobs on a live map. One-tap navigation to every site.",
   },
   {
     icon: Users,
     title: "Team Roles",
-    description: "Admin, office, and installer views — everyone sees what they need.",
+    description:
+      "Admin, office, and installer views — everyone sees what they need.",
   },
   {
     icon: Camera,
     title: "Photo Documentation",
-    description: "Before/after photos, permits, and drawings attached to every job.",
+    description:
+      "Before/after photos, permits, and drawings attached to every job.",
   },
   {
     icon: Bell,
@@ -118,9 +123,9 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
               </span>
             </h1>
             <p className="mt-5 max-w-lg text-lg leading-relaxed text-zinc-400">
-              Zign replaces whiteboards and spreadsheets with one
-              beautiful system — scheduling, dispatch, maps, photos, and
-              field updates from anywhere.
+              Zign replaces whiteboards and spreadsheets with one beautiful
+              system — scheduling, dispatch, maps, photos, and field updates
+              from anywhere.
             </p>
 
             {/* Stats */}
@@ -176,9 +181,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
               className="rounded-xl border border-white/5 bg-white/2 p-4"
             >
               <f.icon className="mb-2 h-5 w-5 text-emerald-400" />
-              <h3 className="text-sm font-semibold text-zinc-200">
-                {f.title}
-              </h3>
+              <h3 className="text-sm font-semibold text-zinc-200">{f.title}</h3>
               <p className="mt-1 text-xs leading-relaxed text-zinc-500">
                 {f.description}
               </p>
@@ -190,7 +193,9 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/5 px-6 py-6 md:px-12">
         <div className="mx-auto flex max-w-7xl items-center justify-between text-xs text-zinc-600">
-          <span>&copy; {new Date().getFullYear()} Zign. All rights reserved.</span>
+          <span>
+            &copy; {new Date().getFullYear()} Zign. All rights reserved.
+          </span>
           <div className="flex gap-4">
             <span>Privacy</span>
             <span>Terms</span>

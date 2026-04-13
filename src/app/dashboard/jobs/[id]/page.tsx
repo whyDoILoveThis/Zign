@@ -265,7 +265,11 @@ export default function JobDetailPage({
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => setEditModalOpen(true)}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setEditModalOpen(true)}
+          >
             <Pencil className="h-4 w-4" />
             Edit
           </Button>
@@ -500,7 +504,8 @@ export default function JobDetailPage({
             postal_code: job.postal_code || "",
             scheduled_date: job.scheduled_date || "",
             scheduled_time: job.scheduled_time || "",
-            estimated_duration_minutes: job.estimated_duration_minutes?.toString() || "",
+            estimated_duration_minutes:
+              job.estimated_duration_minutes?.toString() || "",
             notes: job.notes || "",
             installer_ids: job.assignments?.map((a) => a.installer_id) || [],
           }}

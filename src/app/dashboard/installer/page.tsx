@@ -331,7 +331,11 @@ export default function InstallerPage() {
                           {job.scheduled_time &&
                             ` at ${job.scheduled_time.slice(0, 5)}`}
                           {job.estimated_duration_minutes &&
-                            ` (${job.estimated_duration_minutes} min)`}
+                            ` (${
+                              job.estimated_duration_minutes >= 60
+                                ? `${(job.estimated_duration_minutes / 60).toFixed(job.estimated_duration_minutes % 60 === 0 ? 0 : 1)}h`
+                                : `${job.estimated_duration_minutes}m`
+                            })`}
                         </span>
                       </div>
                     )}

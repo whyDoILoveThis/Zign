@@ -451,7 +451,10 @@ export default function JobDetailPage({
               )}
               {job.estimated_duration_minutes && (
                 <p className="text-zinc-500">
-                  Est. {job.estimated_duration_minutes} minutes
+                  Est.{" "}
+                  {job.estimated_duration_minutes >= 60
+                    ? `${(job.estimated_duration_minutes / 60).toFixed(job.estimated_duration_minutes % 60 === 0 ? 0 : 1)} hours`
+                    : `${job.estimated_duration_minutes} min`}
                 </p>
               )}
               {job.scheduled_date && (
@@ -504,8 +507,9 @@ export default function JobDetailPage({
             postal_code: job.postal_code || "",
             scheduled_date: job.scheduled_date || "",
             scheduled_time: job.scheduled_time || "",
-            estimated_duration_minutes:
-              job.estimated_duration_minutes?.toString() || "",
+            estimated_duration_minutes: job.estimated_duration_minutes
+              ? (job.estimated_duration_minutes / 60).toString()
+              : "",
             notes: job.notes || "",
             installer_ids: job.assignments?.map((a) => a.installer_id) || [],
           }}

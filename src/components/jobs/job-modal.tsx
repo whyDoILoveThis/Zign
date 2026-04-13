@@ -95,7 +95,7 @@ export function JobModal({ open, onClose, onSuccess, initialData }: Props) {
       const payload = {
         ...form,
         estimated_duration_minutes: form.estimated_duration_minutes
-          ? parseInt(form.estimated_duration_minutes)
+          ? Math.round(parseFloat(form.estimated_duration_minutes) * 60)
           : null,
       };
 
@@ -224,13 +224,14 @@ export function JobModal({ open, onClose, onSuccess, initialData }: Props) {
           />
           <Input
             id="job-duration"
-            label="Est. Duration (min)"
+            label="Est. Duration (hrs)"
             type="number"
+            step="0.5"
             value={form.estimated_duration_minutes}
             onChange={(e) =>
               updateField("estimated_duration_minutes", e.target.value)
             }
-            placeholder="120"
+            placeholder="2"
           />
         </div>
 

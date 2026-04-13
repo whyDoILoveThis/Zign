@@ -11,6 +11,7 @@ import {
   ChevronDown,
   RefreshCw,
   AlertCircle,
+  Loader2,
 } from "lucide-react";
 import { Button, Card } from "@/components/ui";
 import { Spinner } from "@/components/ui/spinner";
@@ -95,7 +96,13 @@ export default function TeamPage() {
   }, [fetchTeam]);
 
   const updateRole = async (profileId: string, newRole: UserRole) => {
+    const previousRole = members.find((m) => m.$id === profileId)?.role;
+    // Optimistic update
+    setMembers((prev) =>
+      prev.map((m) => (m.$id === profileId ? { ...m, role: newRole } : m)),
+    );
     setUpdatingRole(profileId);
+    setEditingRole(null);
     try {
       const res = await fetch("/api/team", {
         method: "PATCH",
@@ -103,14 +110,26 @@ export default function TeamPage() {
         body: JSON.stringify({ profileId, role: newRole }),
       });
 
-      if (res.ok) {
-        setMembers((prev) =>
-          prev.map((m) => (m.$id === profileId ? { ...m, role: newRole } : m)),
-        );
-        setEditingRole(null);
+      if (!res.ok) {
+        // Rollback on error
+        if (previousRole) {
+          setMembers((prev) =>
+            prev.map((m) =>
+              m.$id === profileId ? { ...m, role: previousRole } : m,
+            ),
+          );
+        }
       }
     } catch (err) {
       console.error("Failed to update role:", err);
+      // Rollback on network error
+      if (previousRole) {
+        setMembers((prev) =>
+          prev.map((m) =>
+            m.$id === profileId ? { ...m, role: previousRole } : m,
+          ),
+        );
+      }
     } finally {
       setUpdatingRole(null);
     }
@@ -247,7 +266,15 @@ export default function TeamPage() {
             const Icon = config.icon;
 
             return (
-              <Card key={member.$id} padding={false}>
+              <Card
+                key={member.$id}
+                padding={false}
+                className={
+                  editingRole === member.$id
+                    ? "relative z-10 overflow-visible"
+                    : ""
+                }
+              >
                 <div className="flex items-center gap-4 p-4">
                   {/* Avatar */}
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm font-semibold text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
@@ -297,10 +324,17 @@ export default function TeamPage() {
                             editingRole === member.$id ? null : member.$id,
                           )
                         }
-                        className="flex items-center gap-1 rounded-lg border border-zinc-200 px-2.5 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                        disabled={updatingRole === member.$id}
+                        className="flex items-center gap-1 rounded-lg border border-zinc-200 px-2.5 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 disabled:opacity-50"
                       >
-                        Change Role
-                        <ChevronDown className="h-3 w-3" />
+                        {updatingRole === member.$id ? (
+                          <Loader2 className="h-3 w-3 animate-spin" />
+                        ) : (
+                          <>
+                            Change Role
+                            <ChevronDown className="h-3 w-3" />
+                          </>
+                        )}
                       </button>
 
                       {editingRole === member.$id && (
@@ -318,7 +352,12 @@ export default function TeamPage() {
                                     member.role === role && "font-medium",
                                   )}
                                 >
-                                  <rc.icon className="h-3.5 w-3.5" />
+                                  <rc.icon
+                                    className={cn(
+                                      "h-3.5 w-3.5",
+                                      rc.color.split(" ")[0],
+                                    )}
+                                  />
                                   {rc.label}
                                   {member.role === role && (
                                     <span className="ml-auto text-xs text-zinc-400">

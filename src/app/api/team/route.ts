@@ -74,12 +74,16 @@ export async function PATCH(request: NextRequest) {
       { role }
     );
 
-    // Sync role to Clerk publicMetadata
+    // Sync role to Clerk publicMetadata (best-effort, don't fail the request)
     if (updated.clerk_id) {
-      const clerk = await clerkClient();
-      await clerk.users.updateUserMetadata(updated.clerk_id, {
-        publicMetadata: { role },
-      });
+      try {
+        const clerk = await clerkClient();
+        await clerk.users.updateUserMetadata(updated.clerk_id, {
+          publicMetadata: { role },
+        });
+      } catch (clerkErr) {
+        console.error("Failed to sync role to Clerk:", clerkErr);
+      }
     }
 
     return NextResponse.json(updated);

@@ -1,18 +1,17 @@
 "use client";
 
-import { SignIn, useSignIn } from "@clerk/nextjs";
+import { SignIn, useSignIn, useAuth, useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { AuthLayout } from "@/components/auth/auth-layout";
 
 const DEMO_ACCOUNTS = [
   {
     label: "Admin",
+    role: "admin",
     tag: "Full access",
     description: "Manage jobs, team, clients, and scheduling",
-    email: process.env.NEXT_PUBLIC_DEMO_ADMIN_EMAIL || "admin@demo.zign.app",
-    password: process.env.NEXT_PUBLIC_DEMO_ADMIN_PASSWORD || "demo-admin-2026",
     gradient: "from-emerald-500/20 to-emerald-500/5",
     border: "border-emerald-500/20 hover:border-emerald-500/40",
     iconBg: "bg-emerald-500/10",
@@ -20,10 +19,9 @@ const DEMO_ACCOUNTS = [
   },
   {
     label: "Installer",
+    role: "installer",
     tag: "Field view",
     description: "See assigned jobs, update status, add photos",
-    email: process.env.NEXT_PUBLIC_DEMO_INSTALLER_EMAIL || "installer@demo.zign.app",
-    password: process.env.NEXT_PUBLIC_DEMO_INSTALLER_PASSWORD || "demo-installer-2026",
     gradient: "from-sky-500/20 to-sky-500/5",
     border: "border-sky-500/20 hover:border-sky-500/40",
     iconBg: "bg-sky-500/10",
@@ -32,30 +30,58 @@ const DEMO_ACCOUNTS = [
 ];
 
 export default function SignInPage() {
-  const { signIn, setActive } = useSignIn();
+  const { signIn } = useSignIn();
+  const { isSignedIn } = useAuth();
+  const { setActive } = useClerk();
   const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // If already signed in, redirect to dashboard to prevent re-render loop
+  useEffect(() => {
+    if (isSignedIn) {
+      router.replace("/dashboard");
+    }
+  }, [isSignedIn, router]);
 
   const handleDemoLogin = async (account: (typeof DEMO_ACCOUNTS)[number]) => {
     if (!signIn) return;
     setLoading(account.label);
     setError(null);
     try {
-      const result = await signIn.create({
-        identifier: account.email,
-        password: account.password,
+      // Get a sign-in token from the server
+      const res = await fetch("/api/demo-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role: account.role }),
       });
-      if (result.status === "complete" && result.createdSessionId) {
-        await setActive({ session: result.createdSessionId });
-        router.push("/dashboard");
+      if (!res.ok) {
+        const body = await res.text();
+        console.error("Demo login API error:", res.status, body);
+        throw new Error("Failed to get demo token");
       }
-    } catch {
+      const { ticket } = await res.json();
+
+      await signIn.create({
+        strategy: "ticket",
+        ticket,
+      });
+
+      // In Clerk v7, signIn object is mutated after create()
+      if (signIn.status === "complete" && signIn.createdSessionId) {
+        await setActive({ session: signIn.createdSessionId });
+        window.location.href = "/dashboard";
+        return;
+      }
+    } catch (err) {
+      console.error("Demo login error:", err);
       setError("Demo account not available. Please sign in manually.");
     } finally {
       setLoading(null);
     }
   };
+
+  if (isSignedIn) return null;
 
   return (
     <AuthLayout>
@@ -124,6 +150,7 @@ export default function SignInPage() {
 
       {/* Clerk form */}
       <SignIn
+        forceRedirectUrl="/dashboard"
         appearance={{
           elements: {
             rootBox: "w-full",

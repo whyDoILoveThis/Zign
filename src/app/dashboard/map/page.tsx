@@ -44,8 +44,8 @@ export default function MapPage() {
   const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null);
   const [calculatingRoute, setCalculatingRoute] = useState(false);
   const [showList, setShowList] = useState(true);
-  const [statusFilter, setStatusFilter] = useState<string>(
-    "scheduled,in_progress",
+  const [statusFilter, setStatusFilter] = useState<Set<JobStatus>>(
+    new Set(["scheduled", "in_progress"]),
   );
 
   const fetchJobs = useCallback(async () => {
@@ -67,10 +67,16 @@ export default function MapPage() {
     fetchJobs();
   }, [fetchJobs]);
 
-  const filteredJobs = jobs.filter((j) => {
-    if (!statusFilter) return true;
-    return statusFilter.split(",").includes(j.status);
-  });
+  const allStatuses: JobStatus[] = [
+    "scheduled",
+    "in_progress",
+    "completed",
+    "on_hold",
+    "cancelled",
+  ];
+  const allSelected = allStatuses.every((s) => statusFilter.has(s));
+
+  const filteredJobs = jobs.filter((j) => statusFilter.has(j.status));
 
   const calculateRoute = async (job: MapJob) => {
     if (!job.lat || !job.lng) return;
@@ -151,17 +157,60 @@ export default function MapPage() {
             locations
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="h-9 rounded-lg border border-zinc-300 bg-white px-3 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              if (allSelected) setStatusFilter(new Set());
+              else setStatusFilter(new Set(allStatuses));
+            }}
+            className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+              allSelected
+                ? "border-zinc-300 bg-white text-zinc-900 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+                : "border-transparent bg-zinc-100 text-zinc-400 dark:bg-zinc-800/50 dark:text-zinc-500"
+            }`}
           >
-            <option value="scheduled,in_progress">Active Jobs</option>
-            <option value="scheduled">Scheduled Only</option>
-            <option value="in_progress">In Progress Only</option>
-            <option value="">All Jobs</option>
-          </select>
+            All
+          </button>
+          {(
+            [
+              { value: "scheduled", label: "Scheduled", dot: "bg-blue-500" },
+              {
+                value: "in_progress",
+                label: "In Progress",
+                dot: "bg-amber-500",
+              },
+              { value: "completed", label: "Completed", dot: "bg-emerald-500" },
+              { value: "on_hold", label: "On Hold", dot: "bg-zinc-400" },
+              { value: "cancelled", label: "Cancelled", dot: "bg-red-500" },
+            ] as const
+          ).map((s) => {
+            const active = statusFilter.has(s.value);
+            return (
+              <button
+                key={s.value}
+                type="button"
+                onClick={() => {
+                  setStatusFilter((prev) => {
+                    const next = new Set(prev);
+                    if (next.has(s.value)) next.delete(s.value);
+                    else next.add(s.value);
+                    return next;
+                  });
+                }}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                  active
+                    ? "border-zinc-300 bg-white text-zinc-900 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+                    : "border-transparent bg-zinc-100 text-zinc-400 dark:bg-zinc-800/50 dark:text-zinc-500"
+                }`}
+              >
+                <span
+                  className={`h-2 w-2 rounded-full ${s.dot} ${!active ? "opacity-40" : ""}`}
+                />
+                {s.label}
+              </button>
+            );
+          })}
           <Button
             variant="outline"
             size="sm"

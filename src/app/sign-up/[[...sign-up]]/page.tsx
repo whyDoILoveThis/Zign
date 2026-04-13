@@ -2,48 +2,60 @@
 
 import { SignUp } from "@clerk/nextjs";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { AuthLayout } from "@/components/auth/auth-layout";
 
 export default function SignUpPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-zinc-950">
-      <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-900 dark:bg-white">
-            <span className="text-lg font-bold text-white dark:text-zinc-900">
-              Z
-            </span>
-          </div>
-          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-            Create your account
-          </h1>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            Get started with Zign operations
-          </p>
-        </div>
-
-        {/* Demo nudge */}
-        <div className="mb-6 rounded-xl border border-zinc-200 bg-white p-4 text-center dark:border-zinc-800 dark:bg-zinc-900">
-          <p className="text-sm text-zinc-600 dark:text-zinc-300">
-            Just exploring?{" "}
-            <Link
-              href="/sign-in"
-              className="font-semibold text-zinc-900 underline underline-offset-2 hover:text-zinc-700 dark:text-zinc-100 dark:hover:text-zinc-300"
-            >
-              Try a demo account
-            </Link>{" "}
-            instead.
-          </p>
-        </div>
-
-        <SignUp
-          appearance={{
-            elements: {
-              rootBox: "w-full",
-              card: "shadow-none border border-zinc-200 dark:border-zinc-800 rounded-xl",
-            },
-          }}
-        />
+    <AuthLayout>
+      <div className="mb-8">
+        <h2 className="mb-1 text-2xl font-bold text-white">
+          Create your account
+        </h2>
+        <p className="text-sm text-zinc-500">
+          Get started with Zign in under a minute.
+        </p>
       </div>
-    </div>
+
+      {/* Demo nudge */}
+      <div className="mb-6 rounded-xl border border-white/5 bg-white/2 p-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-zinc-300">
+              Just exploring?
+            </p>
+            <p className="mt-0.5 text-xs text-zinc-500">
+              Try a pre-loaded demo account instead.
+            </p>
+          </div>
+          <Link
+            href="/sign-in"
+            className="flex items-center gap-1.5 rounded-lg bg-white/5 px-3 py-2 text-xs font-medium text-zinc-300 transition-all hover:bg-white/10 hover:text-white"
+          >
+            Demo
+            <ArrowRight className="h-3 w-3" />
+          </Link>
+        </div>
+      </div>
+
+      <SignUp
+        appearance={{
+          elements: {
+            rootBox: "w-full",
+            cardBox: "w-full",
+            card: "shadow-none bg-transparent border-0 p-0",
+            headerTitle: "text-white",
+            headerSubtitle: "text-zinc-400",
+            formButtonPrimary:
+              "bg-white text-zinc-900 hover:bg-zinc-200 font-semibold rounded-lg",
+            formFieldInput:
+              "bg-white/5 border-white/10 text-white placeholder:text-zinc-600 rounded-lg",
+            formFieldLabel: "text-zinc-400",
+            footerAction: "text-zinc-500",
+            footerActionLink: "text-emerald-400 hover:text-emerald-300",
+          },
+        }}
+      />
+    </AuthLayout>
   );
 }

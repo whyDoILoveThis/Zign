@@ -3,19 +3,31 @@
 import { SignIn, useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ArrowRight, Loader2 } from "lucide-react";
+import { AuthLayout } from "@/components/auth/auth-layout";
 
 const DEMO_ACCOUNTS = [
   {
-    label: "Admin Demo",
-    description: "Full access — manage jobs, team, clients",
+    label: "Admin",
+    tag: "Full access",
+    description: "Manage jobs, team, clients, and scheduling",
     email: process.env.NEXT_PUBLIC_DEMO_ADMIN_EMAIL || "admin@demo.zign.app",
     password: process.env.NEXT_PUBLIC_DEMO_ADMIN_PASSWORD || "demo-admin-2026",
+    gradient: "from-emerald-500/20 to-emerald-500/5",
+    border: "border-emerald-500/20 hover:border-emerald-500/40",
+    iconBg: "bg-emerald-500/10",
+    iconText: "text-emerald-400",
   },
   {
-    label: "Installer Demo",
-    description: "Field view — assigned jobs, status updates",
+    label: "Installer",
+    tag: "Field view",
+    description: "See assigned jobs, update status, add photos",
     email: process.env.NEXT_PUBLIC_DEMO_INSTALLER_EMAIL || "installer@demo.zign.app",
     password: process.env.NEXT_PUBLIC_DEMO_INSTALLER_PASSWORD || "demo-installer-2026",
+    gradient: "from-sky-500/20 to-sky-500/5",
+    border: "border-sky-500/20 hover:border-sky-500/40",
+    iconBg: "bg-sky-500/10",
+    iconText: "text-sky-400",
   },
 ];
 
@@ -46,69 +58,89 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-zinc-950">
-      <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-900 dark:bg-white">
-            <span className="text-lg font-bold text-white dark:text-zinc-900">
-              Z
-            </span>
-          </div>
-          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-            Welcome back
-          </h1>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            Sign in to your Zign operations dashboard
-          </p>
-        </div>
-
-        {/* Demo account buttons */}
-        <div className="mb-6 rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
-          <p className="mb-3 text-center text-xs font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-            Try a demo account
-          </p>
-          <div className="flex gap-3">
-            {DEMO_ACCOUNTS.map((account) => (
-              <button
-                key={account.label}
-                onClick={() => handleDemoLogin(account)}
-                disabled={loading !== null}
-                className="flex flex-1 flex-col items-center gap-1 rounded-lg border border-zinc-200 px-3 py-3 text-center transition-colors hover:border-zinc-300 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-700 dark:hover:border-zinc-600 dark:hover:bg-zinc-800"
-              >
-                <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                  {loading === account.label ? "Signing in..." : account.label}
-                </span>
-                <span className="text-[11px] leading-tight text-zinc-500 dark:text-zinc-400">
-                  {account.description}
-                </span>
-              </button>
-            ))}
-          </div>
-          {error && (
-            <p className="mt-2 text-center text-xs text-red-500">{error}</p>
-          )}
-        </div>
-
-        <div className="relative mb-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-zinc-200 dark:border-zinc-800" />
-          </div>
-          <div className="relative flex justify-center">
-            <span className="bg-zinc-50 px-3 text-xs text-zinc-400 dark:bg-zinc-950 dark:text-zinc-500">
-              or sign in with your account
-            </span>
-          </div>
-        </div>
-
-        <SignIn
-          appearance={{
-            elements: {
-              rootBox: "w-full",
-              card: "shadow-none border border-zinc-200 dark:border-zinc-800 rounded-xl",
-            },
-          }}
-        />
+    <AuthLayout>
+      {/* Demo accounts */}
+      <div className="mb-8">
+        <h2 className="mb-1 text-2xl font-bold text-white">Welcome back</h2>
+        <p className="text-sm text-zinc-500">
+          Sign in to your account, or try a demo below.
+        </p>
       </div>
-    </div>
+
+      <div className="mb-6 space-y-3">
+        <p className="text-[11px] font-medium uppercase tracking-widest text-zinc-600">
+          Explore instantly
+        </p>
+        {DEMO_ACCOUNTS.map((account) => (
+          <button
+            key={account.label}
+            onClick={() => handleDemoLogin(account)}
+            disabled={loading !== null}
+            className={`group relative flex w-full cursor-pointer items-center gap-4 overflow-hidden rounded-xl border bg-linear-to-r p-4 transition-all disabled:opacity-50 ${account.border} ${account.gradient}`}
+          >
+            <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${account.iconBg}`}>
+              <span className={`text-sm font-bold ${account.iconText}`}>
+                {account.label[0]}
+              </span>
+            </div>
+            <div className="flex-1 text-left">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-white">
+                  {account.label} Demo
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-medium text-zinc-400">
+                  {account.tag}
+                </span>
+              </div>
+              <p className="mt-0.5 text-xs text-zinc-500">
+                {account.description}
+              </p>
+            </div>
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/5 text-zinc-500 transition-all group-hover:bg-white/10 group-hover:text-white">
+              {loading === account.label ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <ArrowRight className="h-4 w-4" />
+              )}
+            </div>
+          </button>
+        ))}
+        {error && (
+          <p className="text-center text-xs text-red-400">{error}</p>
+        )}
+      </div>
+
+      {/* Divider */}
+      <div className="relative mb-6">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-white/5" />
+        </div>
+        <div className="relative flex justify-center">
+          <span className="bg-zinc-950 px-4 text-[11px] font-medium uppercase tracking-widest text-zinc-600">
+            or use your account
+          </span>
+        </div>
+      </div>
+
+      {/* Clerk form */}
+      <SignIn
+        appearance={{
+          elements: {
+            rootBox: "w-full",
+            cardBox: "w-full",
+            card: "shadow-none bg-transparent border-0 p-0",
+            headerTitle: "text-white",
+            headerSubtitle: "text-zinc-400",
+            formButtonPrimary:
+              "bg-white text-zinc-900 hover:bg-zinc-200 font-semibold rounded-lg",
+            formFieldInput:
+              "bg-white/5 border-white/10 text-white placeholder:text-zinc-600 rounded-lg",
+            formFieldLabel: "text-zinc-400",
+            footerAction: "text-zinc-500",
+            footerActionLink: "text-emerald-400 hover:text-emerald-300",
+          },
+        }}
+      />
+    </AuthLayout>
   );
 }

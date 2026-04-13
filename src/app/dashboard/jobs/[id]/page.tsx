@@ -242,29 +242,28 @@ export default function JobDetailPage({
   return (
     <div className="animate-fade-in space-y-6">
       {/* Back + Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex items-start gap-4">
+      <div>
+        <div className="flex items-center gap-3">
           <Link
             href="/dashboard/jobs"
-            className="mt-1 rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
+            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-              {job.title}
-            </h1>
-            <div className="mt-1.5 flex items-center gap-3">
-              <StatusBadge status={job.status} />
-              <span className="text-sm text-zinc-500">
-                Created {formatDateTime(job.$createdAt)}
-              </span>
-            </div>
-          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            {job.title}
+          </h1>
+        </div>
+
+        <div className="mt-2 ml-10 flex items-center gap-3">
+          <StatusBadge status={job.status} />
+          <span className="text-sm text-zinc-500">
+            Created {formatDateTime(job.$createdAt)}
+          </span>
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-2">
+        <div className="mt-3 ml-10 flex flex-wrap items-center gap-2">
           <Button
             variant="outline"
             size="sm"

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <!-- Grid pattern -->
+  <g opacity="0.05">
+    <line x1="80" y1="0" x2="80" y2="600" stroke="#fff" stroke-width="1"/>
+    <line x1="160" y1="0" x2="160" y2="600" stroke="#fff" stroke-width="1"/>
+    <line x1="240" y1="0" x2="240" y2="600" stroke="#fff" stroke-width="1"/>
+    <line x1="320" y1="0" x2="320" y2="600" stroke="#fff" stroke-width="1"/>
+    <line x1="400" y1="0" x2="400" y2="600" stroke="#fff" stroke-width="1"/>
+    <line x1="480" y1="0" x2="480" y2="600" stroke="#fff" stroke-width="1"/>
+    <line x1="560" y1="0" x2="560" y2="600" stroke="#fff" stroke-width="1"/>
+    <line x1="640" y1="0" x2="640" y2="600" stroke="#fff" stroke-width="1"/>
+    <line x1="720" y1="0" x2="720" y2="600" stroke="#fff" stroke-width="1"/>
+    <line x1="0" y1="80" x2="800" y2="80" stroke="#fff" stroke-width="1"/>
+    <line x1="0" y1="160" x2="800" y2="160" stroke="#fff" stroke-width="1"/>
+    <line x1="0" y1="240" x2="800" y2="240" stroke="#fff" stroke-width="1"/>
+    <line x1="0" y1="320" x2="800" y2="320" stroke="#fff" stroke-width="1"/>
+    <line x1="0" y1="400" x2="800" y2="400" stroke="#fff" stroke-width="1"/>
+    <line x1="0" y1="480" x2="800" y2="480" stroke="#fff" stroke-width="1"/>
+    <line x1="0" y1="560" x2="800" y2="560" stroke="#fff" stroke-width="1"/>
+  </g>
+  <!-- Hospital corridor -->
+  <rect x="100" y="130" width="600" height="320" rx="4" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <!-- Corridor walls (perspective) -->
+  <polygon points="150,150 350,200 350,400 150,430" fill="#1e293b"/>
+  <polygon points="650,150 450,200 450,400 650,430" fill="#1e293b"/>
+  <rect x="350" y="200" width="100" height="200" fill="#0a0f1a"/>
+  <!-- Installed signs (left) - 3 done -->
+  <rect x="175" y="210" width="70" height="25" rx="3" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="210" y="228" text-anchor="middle" fill="#22c55e" font-family="system-ui, sans-serif" font-size="10" font-weight="600">ER →</text>
+  <rect x="185" y="260" width="70" height="25" rx="3" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="220" y="278" text-anchor="middle" fill="#22c55e" font-family="system-ui, sans-serif" font-size="10" font-weight="600">LAB →</text>
+  <rect x="195" y="310" width="70" height="25" rx="3" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="230" y="328" text-anchor="middle" fill="#22c55e" font-family="system-ui, sans-serif" font-size="10" font-weight="600">ICU →</text>
+  <!-- Not yet installed (right) - dashed outlines -->
+  <rect x="555" y="210" width="70" height="25" rx="3" fill="none" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <rect x="545" y="260" width="70" height="25" rx="3" fill="none" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <rect x="535" y="310" width="70" height="25" rx="3" fill="none" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <!-- Progress indicator -->
+  <g transform="translate(310, 370)">
+    <rect x="0" y="0" width="180" height="8" rx="4" fill="#1e293b"/>
+    <rect x="0" y="0" width="90" height="8" rx="4" fill="#22c55e"/>
+    <text x="90" y="28" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="13" font-weight="500">6 of 12 installed</text>
+  </g>
+  <!-- Label -->
+  <rect x="260" y="490" width="280" height="36" rx="18" fill="#f59e0b" opacity="0.15"/>
+  <text x="400" y="514" text-anchor="middle" fill="#f59e0b" font-family="system-ui, sans-serif" font-size="15" font-weight="600">IN PROGRESS · ER Wing</text>
+  <!-- Corner badge -->
+  <rect x="24" y="24" width="150" height="32" rx="16" fill="#f59e0b" opacity="0.2"/>
+  <text x="99" y="45" text-anchor="middle" fill="#f59e0b" font-family="system-ui, sans-serif" font-size="13" font-weight="600">IN PROGRESS</text>
+</svg>

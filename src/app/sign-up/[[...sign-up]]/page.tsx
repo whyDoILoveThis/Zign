@@ -1,4 +1,7 @@
+"use client";
+
 import { SignUp } from "@clerk/nextjs";
+import Link from "next/link";
 
 export default function SignUpPage() {
   return (
@@ -17,6 +20,21 @@ export default function SignUpPage() {
             Get started with Zign operations
           </p>
         </div>
+
+        {/* Demo nudge */}
+        <div className="mb-6 rounded-xl border border-zinc-200 bg-white p-4 text-center dark:border-zinc-800 dark:bg-zinc-900">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">
+            Just exploring?{" "}
+            <Link
+              href="/sign-in"
+              className="font-semibold text-zinc-900 underline underline-offset-2 hover:text-zinc-700 dark:text-zinc-100 dark:hover:text-zinc-300"
+            >
+              Try a demo account
+            </Link>{" "}
+            instead.
+          </p>
+        </div>
+
         <SignUp
           appearance={{
             elements: {

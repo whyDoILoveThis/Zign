@@ -7,7 +7,7 @@
  * Safe to re-run: skips anything that already exists.
  */
 
-import { Client, Databases, ID } from "node-appwrite";
+import { Client, Databases, DatabasesIndexType, OrderBy } from "node-appwrite";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 
@@ -51,9 +51,9 @@ interface AttrDef {
 
 interface IndexDef {
   key: string;
-  type: "key" | "fulltext";
+  type: DatabasesIndexType;
   attributes: string[];
-  orders?: ("ASC" | "DESC")[];
+  orders?: OrderBy[];
 }
 
 interface CollectionDef {
@@ -77,8 +77,8 @@ const collections: CollectionDef[] = [
       { name: "avatar_url", type: "string", size: 2048, required: false },
     ],
     indexes: [
-      { key: "idx_clerk_id", type: "key", attributes: ["clerk_id"], orders: ["ASC"] },
-      { key: "idx_role", type: "key", attributes: ["role"], orders: ["ASC"] },
+      { key: "idx_clerk_id", type: DatabasesIndexType.Key, attributes: ["clerk_id"], orders: [OrderBy.Asc] },
+      { key: "idx_role", type: DatabasesIndexType.Key, attributes: ["role"], orders: [OrderBy.Asc] },
     ],
   },
   {
@@ -98,8 +98,8 @@ const collections: CollectionDef[] = [
       { name: "notes", type: "string", size: 5000, required: false },
     ],
     indexes: [
-      { key: "idx_name", type: "key", attributes: ["name"], orders: ["ASC"] },
-      { key: "idx_name_search", type: "fulltext", attributes: ["name"] },
+      { key: "idx_name", type: DatabasesIndexType.Key, attributes: ["name"], orders: [OrderBy.Asc] },
+      { key: "idx_name_search", type: DatabasesIndexType.Fulltext, attributes: ["name"] },
     ],
   },
   {
@@ -124,10 +124,10 @@ const collections: CollectionDef[] = [
       { name: "created_by", type: "string", size: 191, required: true },
     ],
     indexes: [
-      { key: "idx_status", type: "key", attributes: ["status"], orders: ["ASC"] },
-      { key: "idx_client_id", type: "key", attributes: ["client_id"], orders: ["ASC"] },
-      { key: "idx_scheduled_date", type: "key", attributes: ["scheduled_date"], orders: ["ASC"] },
-      { key: "idx_title_search", type: "fulltext", attributes: ["title"] },
+      { key: "idx_status", type: DatabasesIndexType.Key, attributes: ["status"], orders: [OrderBy.Asc] },
+      { key: "idx_client_id", type: DatabasesIndexType.Key, attributes: ["client_id"], orders: [OrderBy.Asc] },
+      { key: "idx_scheduled_date", type: DatabasesIndexType.Key, attributes: ["scheduled_date"], orders: [OrderBy.Asc] },
+      { key: "idx_title_search", type: DatabasesIndexType.Fulltext, attributes: ["title"] },
     ],
   },
   {
@@ -139,7 +139,7 @@ const collections: CollectionDef[] = [
       { name: "assigned_by", type: "string", size: 191, required: true },
     ],
     indexes: [
-      { key: "idx_job_id", type: "key", attributes: ["job_id"], orders: ["ASC"] },
+      { key: "idx_job_id", type: DatabasesIndexType.Key, attributes: ["job_id"], orders: [OrderBy.Asc] },
     ],
   },
   {
@@ -151,7 +151,7 @@ const collections: CollectionDef[] = [
       { name: "content", type: "string", size: 10000, required: true },
     ],
     indexes: [
-      { key: "idx_job_id", type: "key", attributes: ["job_id"], orders: ["ASC"] },
+      { key: "idx_job_id", type: DatabasesIndexType.Key, attributes: ["job_id"], orders: [OrderBy.Asc] },
     ],
   },
   {
@@ -168,7 +168,7 @@ const collections: CollectionDef[] = [
       { name: "category", type: "string", size: 20, required: true },
     ],
     indexes: [
-      { key: "idx_job_id", type: "key", attributes: ["job_id"], orders: ["ASC"] },
+      { key: "idx_job_id", type: DatabasesIndexType.Key, attributes: ["job_id"], orders: [OrderBy.Asc] },
     ],
   },
   {
@@ -184,8 +184,8 @@ const collections: CollectionDef[] = [
       { name: "job_id", type: "string", size: 36, required: false },
     ],
     indexes: [
-      { key: "idx_user_id", type: "key", attributes: ["user_id"], orders: ["ASC"] },
-      { key: "idx_read", type: "key", attributes: ["read"], orders: ["ASC"] },
+      { key: "idx_user_id", type: DatabasesIndexType.Key, attributes: ["user_id"], orders: [OrderBy.Asc] },
+      { key: "idx_read", type: DatabasesIndexType.Key, attributes: ["read"], orders: [OrderBy.Asc] },
     ],
   },
 ];

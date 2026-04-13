@@ -16,6 +16,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { formatDate } from "@/lib/utils";
+import { useProfile } from "@/components/providers/profile-provider";
 import type { JobStatus } from "@/types";
 
 interface DashboardJob {
@@ -34,6 +35,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [today, setToday] = useState("");
   const [weekAgo, setWeekAgo] = useState("");
+  const { role } = useProfile();
 
   useEffect(() => {
     fetch("/api/jobs")
@@ -131,12 +133,14 @@ export default function DashboardPage() {
             Overview of your operations
           </p>
         </div>
-        <Link href="/dashboard/jobs">
-          <Button>
-            <Plus className="h-4 w-4" />
-            New Job
-          </Button>
-        </Link>
+        {(role === "admin" || role === "office") && (
+          <Link href="/dashboard/jobs">
+            <Button>
+              <Plus className="h-4 w-4" />
+              New Job
+            </Button>
+          </Link>
+        )}
       </div>
 
       {/* Stats grid */}

@@ -15,6 +15,7 @@ import {
 import { Button, Card, EmptyState, Input } from "@/components/ui";
 import { Spinner } from "@/components/ui/spinner";
 import { ClientModal } from "@/components/clients/client-modal";
+import { useProfile } from "@/components/providers/profile-provider";
 import type { Client } from "@/types";
 
 export default function ClientsPage() {
@@ -24,6 +25,8 @@ export default function ClientsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [menuOpen, setMenuOpen] = useState<string | null>(null);
+  const { role } = useProfile();
+  const canCreate = role === "admin" || role === "office";
 
   const fetchClients = useCallback(async () => {
     try {
@@ -76,15 +79,17 @@ export default function ClientsPage() {
             directory
           </p>
         </div>
-        <Button
-          onClick={() => {
-            setEditingClient(null);
-            setModalOpen(true);
-          }}
-        >
-          <Plus className="h-4 w-4" />
-          Add Client
-        </Button>
+        {canCreate && (
+          <Button
+            onClick={() => {
+              setEditingClient(null);
+              setModalOpen(true);
+            }}
+          >
+            <Plus className="h-4 w-4" />
+            Add Client
+          </Button>
+        )}
       </div>
 
       {/* Search */}

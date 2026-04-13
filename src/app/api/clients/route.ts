@@ -56,6 +56,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Only admin and office can create clients
+  const { documents: profiles } = await databases.listDocuments(
+    DATABASE_ID,
+    COLLECTIONS.profiles,
+    [Query.equal("clerk_id", userId), Query.limit(1)]
+  );
+  if (profiles.length === 0 || !['admin', 'office'].includes(profiles[0].role)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   const body = await request.json();
   const { name, contact_name, email, phone, address, city, state, postal_code, notes } = body;
 

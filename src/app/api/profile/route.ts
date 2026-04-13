@@ -33,7 +33,14 @@ export async function GET() {
     const demoAdminEmail = process.env.NEXT_PUBLIC_DEMO_ADMIN_EMAIL;
     if (demoAdminEmail && email === demoAdminEmail && role !== "admin") {
       role = "admin";
-      // Sync back to Clerk so it stays consistent
+      await clerk.users.updateUserMetadata(userId, {
+        publicMetadata: { role },
+      });
+    }
+
+    const demoOfficeEmail = process.env.NEXT_PUBLIC_DEMO_OFFICE_EMAIL;
+    if (demoOfficeEmail && email === demoOfficeEmail && role !== "office") {
+      role = "office";
       await clerk.users.updateUserMetadata(userId, {
         publicMetadata: { role },
       });

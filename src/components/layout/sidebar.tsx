@@ -20,10 +20,20 @@ import { useProfile } from "@/components/providers/profile-provider";
 
 const allNavigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Jobs", href: "/dashboard/jobs", icon: Briefcase },
+  {
+    name: "Jobs",
+    href: "/dashboard/jobs",
+    icon: Briefcase,
+    staffOnly: true as const,
+  },
   { name: "Schedule", href: "/dashboard/schedule", icon: Calendar },
   { name: "Map", href: "/dashboard/map", icon: MapPin },
-  { name: "Clients", href: "/dashboard/clients", icon: Building2 },
+  {
+    name: "Clients",
+    href: "/dashboard/clients",
+    icon: Building2,
+    staffOnly: true as const,
+  },
   {
     name: "Team",
     href: "/dashboard/team",
@@ -39,9 +49,12 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const { role } = useProfile();
 
-  const navigation = allNavigation.filter(
-    (item) => !("adminOnly" in item && item.adminOnly) || role === "admin",
-  );
+  const navigation = allNavigation.filter((item) => {
+    if ("adminOnly" in item && item.adminOnly) return role === "admin";
+    if ("staffOnly" in item && item.staffOnly)
+      return role === "admin" || role === "office";
+    return true;
+  });
 
   return (
     <aside

@@ -19,6 +19,7 @@ import { Button, Card, StatusBadge, EmptyState } from "@/components/ui";
 import { Spinner } from "@/components/ui/spinner";
 import { JobModal } from "@/components/jobs/job-modal";
 import { formatDate } from "@/lib/utils";
+import { useProfile } from "@/components/providers/profile-provider";
 import type { JobStatus } from "@/types";
 
 interface JobRow {
@@ -73,6 +74,8 @@ export default function JobsPage() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const { role } = useProfile();
+  const canCreate = role === "admin" || role === "office";
 
   const fetchJobs = useCallback(async () => {
     try {
@@ -108,10 +111,12 @@ export default function JobsPage() {
             {jobs.length} job{jobs.length !== 1 ? "s" : ""} total
           </p>
         </div>
-        <Button onClick={() => setModalOpen(true)}>
-          <Plus className="h-4 w-4" />
-          New Job
-        </Button>
+        {canCreate && (
+          <Button onClick={() => setModalOpen(true)}>
+            <Plus className="h-4 w-4" />
+            New Job
+          </Button>
+        )}
       </div>
 
       {/* Filters */}

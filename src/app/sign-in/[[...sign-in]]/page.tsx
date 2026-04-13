@@ -18,6 +18,16 @@ const DEMO_ACCOUNTS = [
     iconText: "text-emerald-400",
   },
   {
+    label: "Office",
+    role: "office",
+    tag: "Back office",
+    description: "Create jobs, manage clients, dispatch installers",
+    gradient: "from-violet-500/20 to-violet-500/5",
+    border: "border-violet-500/20 hover:border-violet-500/40",
+    iconBg: "bg-violet-500/10",
+    iconText: "text-violet-400",
+  },
+  {
     label: "Installer",
     role: "installer",
     tag: "Field view",

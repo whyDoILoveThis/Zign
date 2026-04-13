@@ -3,6 +3,7 @@ import { clerkClient } from "@clerk/nextjs/server";
 
 function getDemoEmail(role: string): string | undefined {
   if (role === "admin") return process.env.NEXT_PUBLIC_DEMO_ADMIN_EMAIL;
+  if (role === "office") return process.env.NEXT_PUBLIC_DEMO_OFFICE_EMAIL;
   if (role === "installer") return process.env.NEXT_PUBLIC_DEMO_INSTALLER_EMAIL;
   return undefined;
 }

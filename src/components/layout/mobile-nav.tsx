@@ -61,11 +61,6 @@ export function MobileNav() {
     return () => document.removeEventListener("mousedown", handler);
   }, [moreOpen]);
 
-  // Close on navigation
-  useEffect(() => {
-    setMoreOpen(false);
-  }, [pathname]);
-
   return (
     <>
       {/* Backdrop */}
@@ -77,9 +72,9 @@ export function MobileNav() {
       <div
         ref={sheetRef}
         className={cn(
-          "fixed inset-x-0 z-[60] transition-all duration-300 ease-out md:hidden",
+          "fixed inset-x-0 z-60 transition-all duration-300 ease-out md:hidden",
           moreOpen
-            ? "bottom-[56px] opacity-100"
+            ? "bottom-14 opacity-100"
             : "-bottom-full opacity-0 pointer-events-none",
         )}
       >
@@ -104,6 +99,7 @@ export function MobileNav() {
                 <Link
                   key={item.name}
                   href={item.href}
+                  onClick={() => setMoreOpen(false)}
                   className={cn(
                     "flex flex-col items-center gap-1.5 rounded-xl px-2 py-3 text-[11px] font-medium transition-colors",
                     isActive

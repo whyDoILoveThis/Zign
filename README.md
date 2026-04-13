@@ -324,6 +324,35 @@ src/
 3. Add a case in `provider-factory.ts`
 4. Set `MAPS_PROVIDER=your-provider` in `.env.local`
 
+## Deployment
+
+### Vercel (recommended)
+
+1. Push the repository to GitHub
+2. Import the project in [Vercel](https://vercel.com)
+3. Add all environment variables from `.env.example` to the Vercel project settings
+4. Deploy — Vercel auto-detects Next.js and handles the build
+
+### Other Node.js hosts (Railway, Render, etc.)
+
+```bash
+npm run build
+npm start
+```
+
+Set the environment variables from `.env.example` in your hosting provider's dashboard. The app listens on the port defined by `PORT` (defaults to 3000).
+
+### Post-deploy checklist
+
+- [ ] Set Clerk webhook URL to `https://your-domain.com/api/webhooks/clerk`
+- [ ] Run `npx tsx scripts/setup-db.ts` to create Appwrite collections (or run locally pointing at the production Appwrite project)
+- [ ] Optionally run `npx tsx scripts/seed.ts` to load demo data
+- [ ] Verify sign-in and sign-up redirects work with your domain
+
+### Mobile app (future)
+
+The entire frontend communicates through REST API routes under `/api/`. A React Native or Capacitor mobile app can consume the same endpoints using Clerk session tokens for authentication — no backend changes needed.
+
 ## License
 
 Private — all rights reserved.

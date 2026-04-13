@@ -251,15 +251,15 @@ export default function JobDetailPage({
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-                {job.title}
-              </h1>
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+              {job.title}
+            </h1>
+            <div className="mt-1.5 flex items-center gap-3">
               <StatusBadge status={job.status} />
+              <span className="text-sm text-zinc-500">
+                Created {formatDateTime(job.$createdAt)}
+              </span>
             </div>
-            <p className="mt-1 text-sm text-zinc-500">
-              Created {formatDateTime(job.$createdAt)}
-            </p>
           </div>
         </div>
 

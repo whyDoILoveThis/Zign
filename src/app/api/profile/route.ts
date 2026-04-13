@@ -24,9 +24,20 @@ export async function GET() {
     // Profile doesn't exist — auto-provision from Clerk
     const clerk = await clerkClient();
     const user = await clerk.users.getUser(userId);
+    const email = user.emailAddresses[0]?.emailAddress || "";
 
-    const role: UserRole =
+    // Determine role: check publicMetadata first, then match demo admin email
+    let role: UserRole =
       (user.publicMetadata?.role as UserRole) || "installer";
+
+    const demoAdminEmail = process.env.NEXT_PUBLIC_DEMO_ADMIN_EMAIL;
+    if (demoAdminEmail && email === demoAdminEmail && role !== "admin") {
+      role = "admin";
+      // Sync back to Clerk so it stays consistent
+      await clerk.users.updateUserMetadata(userId, {
+        publicMetadata: { role },
+      });
+    }
 
     const profile = await databases.createDocument(
       DATABASE_ID,
@@ -34,7 +45,7 @@ export async function GET() {
       ID.unique(),
       {
         clerk_id: userId,
-        email: user.emailAddresses[0]?.emailAddress || "",
+        email,
         first_name: user.firstName || "",
         last_name: user.lastName || "",
         role,

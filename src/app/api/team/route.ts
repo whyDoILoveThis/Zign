@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { databases, DATABASE_ID, COLLECTIONS, Query } from "@/lib/appwrite/server";
 
 // Get all team members (admin/office only)
@@ -73,6 +73,14 @@ export async function PATCH(request: NextRequest) {
       profileId,
       { role }
     );
+
+    // Sync role to Clerk publicMetadata
+    if (updated.clerk_id) {
+      const clerk = await clerkClient();
+      await clerk.users.updateUserMetadata(updated.clerk_id, {
+        publicMetadata: { role },
+      });
+    }
 
     return NextResponse.json(updated);
   } catch (err: unknown) {

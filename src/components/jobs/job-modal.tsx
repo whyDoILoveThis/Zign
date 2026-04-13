@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button, Input, Textarea, Select, Modal } from "@/components/ui";
-import type { Client } from "@/types";
+import type { Client, Profile } from "@/types";
 
 interface JobFormData {
   title: string;
@@ -31,6 +31,7 @@ export function JobModal({ open, onClose, onSuccess, initialData }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [clients, setClients] = useState<Client[]>([]);
+  const [installers, setInstallers] = useState<Profile[]>([]);
   const [form, setForm] = useState<JobFormData>({
     title: initialData?.title || "",
     description: initialData?.description || "",
@@ -52,6 +53,12 @@ export function JobModal({ open, onClose, onSuccess, initialData }: Props) {
         .then((res) => res.json())
         .then((data) => {
           if (Array.isArray(data)) setClients(data);
+        })
+        .catch(() => {});
+      fetch("/api/installers")
+        .then((res) => res.json())
+        .then((data) => {
+          if (Array.isArray(data)) setInstallers(data);
         })
         .catch(() => {});
     }
@@ -235,6 +242,48 @@ export function JobModal({ open, onClose, onSuccess, initialData }: Props) {
           placeholder="Special instructions, access codes, etc."
           rows={2}
         />
+
+        {/* Assign Installers */}
+        {installers.length > 0 && (
+          <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+            <p className="mb-3 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              Assign Installers
+            </p>
+            <div className="space-y-2 max-h-40 overflow-y-auto">
+              {installers.map((installer) => {
+                const checked = form.installer_ids.includes(installer.$id);
+                return (
+                  <label
+                    key={installer.$id}
+                    className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() =>
+                        setForm((prev) => ({
+                          ...prev,
+                          installer_ids: checked
+                            ? prev.installer_ids.filter((id) => id !== installer.$id)
+                            : [...prev.installer_ids, installer.$id],
+                        }))
+                      }
+                      className="h-4 w-4 rounded border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-600"
+                    />
+                    <span className="text-sm text-zinc-700 dark:text-zinc-300">
+                      {installer.first_name} {installer.last_name}
+                    </span>
+                    {installer.email && (
+                      <span className="text-xs text-zinc-400">
+                        {installer.email}
+                      </span>
+                    )}
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         <div className="flex justify-end gap-3 border-t border-zinc-200 pt-4 dark:border-zinc-800">
           <Button type="button" variant="outline" onClick={onClose}>

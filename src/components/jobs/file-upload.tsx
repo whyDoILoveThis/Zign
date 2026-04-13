@@ -9,6 +9,10 @@ import {
   Trash2,
   Download,
   Loader2,
+  ChevronLeft,
+  ChevronRight,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
 import { Button, Card } from "@/components/ui";
 import { cn } from "@/lib/utils";
@@ -58,7 +62,8 @@ export function FileUpload({
   const [dragActive, setDragActive] = useState(false);
   const [category, setCategory] = useState<AttachmentCategory>("photo_before");
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewIndex, setPreviewIndex] = useState<number | null>(null);
+  const [zoom, setZoom] = useState(1);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = useCallback(
@@ -208,7 +213,7 @@ export function FileUpload({
                   src={photo.file_url}
                   alt={photo.file_name}
                   className="h-full w-full cursor-pointer object-cover transition-transform group-hover:scale-105"
-                  onClick={() => setPreviewUrl(photo.file_url)}
+                  onClick={() => { setPreviewIndex(photos.indexOf(photo)); setZoom(1); }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                 <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between p-2 opacity-0 transition-opacity group-hover:opacity-100">
@@ -292,24 +297,92 @@ export function FileUpload({
         </p>
       )}
 
-      {/* Image preview modal */}
-      {previewUrl && (
+      {/* Fullscreen image preview */}
+      {previewIndex !== null && photos[previewIndex] && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-          onClick={() => setPreviewUrl(null)}
+          className="fixed inset-0 z-50 flex flex-col bg-black/95"
+          onClick={() => setPreviewIndex(null)}
         >
-          <button
-            className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
-            onClick={() => setPreviewUrl(null)}
-          >
-            <X className="h-6 w-6" />
-          </button>
-          <img
-            src={previewUrl}
-            alt="Preview"
-            className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain"
+          {/* Top bar */}
+          <div
+            className="flex items-center justify-between px-4 py-3"
             onClick={(e) => e.stopPropagation()}
-          />
+          >
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-medium text-white">
+                {photos[previewIndex].file_name}
+              </p>
+              <p className="text-xs text-zinc-400">
+                {categoryLabels[photos[previewIndex].category]} · {previewIndex + 1} of {photos.length}
+              </p>
+            </div>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setZoom((z) => Math.max(0.5, z - 0.25))}
+                className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                <ZoomOut className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => setZoom((z) => Math.min(3, z + 0.25))}
+                className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                <ZoomIn className="h-5 w-5" />
+              </button>
+              <a
+                href={photos[previewIndex].file_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Download className="h-5 w-5" />
+              </a>
+              <button
+                onClick={() => setPreviewIndex(null)}
+                className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Image */}
+          <div className="flex flex-1 items-center justify-center overflow-auto p-4">
+            <img
+              src={photos[previewIndex].file_url}
+              alt={photos[previewIndex].file_name}
+              className="max-h-full max-w-full object-contain transition-transform duration-200"
+              style={{ transform: `scale(${zoom})` }}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+
+          {/* Prev / Next buttons */}
+          {photos.length > 1 && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPreviewIndex((i) => (i! > 0 ? i! - 1 : photos.length - 1));
+                  setZoom(1);
+                }}
+                className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPreviewIndex((i) => (i! < photos.length - 1 ? i! + 1 : 0));
+                  setZoom(1);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+            </>
+          )}
         </div>
       )}
     </div>

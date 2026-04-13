@@ -58,6 +58,7 @@ export default function TeamPage() {
   const [editingRole, setEditingRole] = useState<string | null>(null);
   const [updatingRole, setUpdatingRole] = useState<string | null>(null);
   const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
+  const [roleFilter, setRoleFilter] = useState<Set<UserRole>>(new Set());
 
   const fetchTeam = useCallback(async () => {
     setLoading(true);
@@ -119,6 +120,20 @@ export default function TeamPage() {
   const office = members.filter((m) => m.role === "office");
   const installers = members.filter((m) => m.role === "installer");
 
+  const filteredMembers =
+    roleFilter.size === 0
+      ? members
+      : members.filter((m) => roleFilter.has(m.role));
+
+  const toggleRole = (role: UserRole) => {
+    setRoleFilter((prev) => {
+      const next = new Set(prev);
+      if (next.has(role)) next.delete(role);
+      else next.add(role);
+      return next;
+    });
+  };
+
   if (loading) {
     return (
       <div className="flex h-[60vh] items-center justify-center">
@@ -159,29 +174,62 @@ export default function TeamPage() {
         </Button>
       </div>
 
-      {/* Stats */}
+      {/* Stats — tap to filter */}
       <div className="mt-6 grid grid-cols-3 gap-4">
-        <Card className="text-center">
-          <Shield className="mx-auto h-6 w-6 text-red-500" />
-          <p className="mt-2 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-            {admins.length}
-          </p>
-          <p className="text-xs text-zinc-500">Admins</p>
-        </Card>
-        <Card className="text-center">
-          <Briefcase className="mx-auto h-6 w-6 text-blue-500" />
-          <p className="mt-2 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-            {office.length}
-          </p>
-          <p className="text-xs text-zinc-500">Office Staff</p>
-        </Card>
-        <Card className="text-center">
-          <Wrench className="mx-auto h-6 w-6 text-amber-500" />
-          <p className="mt-2 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-            {installers.length}
-          </p>
-          <p className="text-xs text-zinc-500">Installers</p>
-        </Card>
+        <button type="button" onClick={() => toggleRole("admin")}>
+          <Card
+            className={cn(
+              "text-center transition-all",
+              roleFilter.has("admin")
+                ? "ring-2 ring-red-500/50"
+                : roleFilter.size > 0
+                  ? "opacity-50"
+                  : "",
+            )}
+          >
+            <Shield className="mx-auto h-6 w-6 text-red-500" />
+            <p className="mt-2 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+              {admins.length}
+            </p>
+            <p className="text-xs text-zinc-500">Admins</p>
+          </Card>
+        </button>
+        <button type="button" onClick={() => toggleRole("office")}>
+          <Card
+            className={cn(
+              "text-center transition-all",
+              roleFilter.has("office")
+                ? "ring-2 ring-blue-500/50"
+                : roleFilter.size > 0
+                  ? "opacity-50"
+                  : "",
+            )}
+          >
+            <Briefcase className="mx-auto h-6 w-6 text-blue-500" />
+            <p className="mt-2 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+              {office.length}
+            </p>
+            <p className="text-xs text-zinc-500">Office Staff</p>
+          </Card>
+        </button>
+        <button type="button" onClick={() => toggleRole("installer")}>
+          <Card
+            className={cn(
+              "text-center transition-all",
+              roleFilter.has("installer")
+                ? "ring-2 ring-amber-500/50"
+                : roleFilter.size > 0
+                  ? "opacity-50"
+                  : "",
+            )}
+          >
+            <Wrench className="mx-auto h-6 w-6 text-amber-500" />
+            <p className="mt-2 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+              {installers.length}
+            </p>
+            <p className="text-xs text-zinc-500">Installers</p>
+          </Card>
+        </button>
       </div>
 
       {members.length === 0 ? (
@@ -194,7 +242,7 @@ export default function TeamPage() {
         </div>
       ) : (
         <div className="mt-6 space-y-3">
-          {members.map((member) => {
+          {filteredMembers.map((member) => {
             const config = roleConfig[member.role];
             const Icon = config.icon;
 

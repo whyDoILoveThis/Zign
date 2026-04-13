@@ -127,30 +127,10 @@
 .cl-userButtonTrigger {
   transition: all 0.3s ease !important;
   border-radius: 9999px !important;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
 }
 
 .cl-userButtonTrigger:hover {
   transform: scale(1.05);
-  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4) !important;
-}
-
-.cl-userButtonPopoverCard {
-  background: linear-gradient(135deg, rgba(30, 30, 30, 0.95) 0%, rgba(20, 20, 20, 0.95) 100%) !important;
-  border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
-  border-radius: 16px !important;
-  backdrop-filter: blur(20px) saturate(1.2) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(1.2) !important;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
-}
-
-.cl-userButtonPopoverCard * {
-  color: #cbd5e1 !important;
-}
-
-.cl-userButtonPopoverActionButton:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  color: #f1f5f9 !important;
 }
 
 /* User Profile / Manage Account Page */
@@ -365,51 +345,36 @@
 ╚═╝░░╚═╝╚══════╝╚══════╝╚═╝░░╚═╝╚═════╝░
 */
 
-/* User Button & Popover */
+/* User Button & Popover — styled via appearance prop on <UserButton> */
 .cl-userButton-root .cl-userButtonTrigger {
   transition: all 0.3s ease !important;
   border-radius: 9999px !important;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
 }
 
 .cl-userButton-root .cl-userButtonTrigger:hover {
   transform: scale(1.05);
-  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4) !important;
 }
 
-.cl-userButtonPopoverMain.🔒️.cl-internal-8vb5lt, .cl-scrollBox, .cl-navbar, .cl-navbarMobileMenuRow, .cl-actionCard  {
-  background: linear-gradient(135deg, rgba(30, 30, 30, 0.95) 0%, rgba(20, 20, 20, 0.95) 100%) !important;
-  border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+.cl-userButtonPopoverCard {
+  background: linear-gradient(135deg, rgba(30, 30, 30, 0.98) 0%, rgba(20, 20, 20, 0.98) 100%) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
   border-radius: 16px !important;
   backdrop-filter: blur(20px) saturate(1.2) !important;
   -webkit-backdrop-filter: blur(20px) saturate(1.2) !important;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4) !important;
 }
 
-.cl-navbar
-
-.cl-navbarMobileMenuRow  {
-  padding: 0;
-}
-
-.cl-userButton-popoverCard * {
+.cl-userButtonPopoverCard * {
   color: #cbd5e1 !important;
 }
 
-.cl-userButtonPopoverFooter.🔒️.cl-internal-pak4nu, .cl-internal-pe6vm4, .cl-profileSectionTitleText__danger  {
-  display: none !important;
+.cl-userButtonPopoverActionButton:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: #f1f5f9 !important;
 }
 
-
-
-
-
-
-.cl-userButton-popoverAction:hover,
-.cl-userButton-popoverAction__manageAccount:hover,
-.cl-userButton-popoverAction__signOut:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  color: #f1f5f9 !important;
+.cl-userButtonPopoverFooter {
+  display: none !important;
 }
 
 /* User Profile / Manage Account Page */

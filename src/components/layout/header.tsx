@@ -1,10 +1,12 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { NotificationBell } from "./notification-bell";
 
 export function Header() {
+  const { isLoaded } = useUser();
+
   return (
     <header className="flex h-14 shrink-0 items-center justify-between border-b border-zinc-200 bg-white px-4 dark:border-zinc-800 dark:bg-zinc-900 md:h-16 md:px-6">
       {/* Logo on mobile, search on desktop */}
@@ -31,13 +33,18 @@ export function Header() {
       <div className="flex items-center gap-3">
         <NotificationBell />
 
-        <UserButton
-          appearance={{
-            elements: {
-              avatarBox: "h-8 w-8",
-            },
-          }}
-        />
+        {isLoaded ? (
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: "h-8 w-8",
+                userButtonPopoverFooter: "hidden",
+              },
+            }}
+          />
+        ) : (
+          <div className="h-8 w-8 animate-pulse rounded-full bg-zinc-200 dark:bg-zinc-700" />
+        )}
       </div>
     </header>
   );

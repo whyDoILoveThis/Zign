@@ -323,6 +323,15 @@ export default function JobDetailPage({
                     .filter(Boolean)
                     .join(", ")}
                 </p>
+                {job.lat && job.lng && (
+                  <Link
+                    href={`/dashboard/map?job=${job.$id}`}
+                    className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-teal-600 hover:text-teal-500 dark:text-teal-400 dark:hover:text-teal-300"
+                  >
+                    <MapPin className="h-3.5 w-3.5" />
+                    View on map
+                  </Link>
+                )}
               </div>
             </div>
           </Card>

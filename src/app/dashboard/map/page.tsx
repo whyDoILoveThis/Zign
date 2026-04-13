@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { Suspense, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   MapPin,
   Navigation,
@@ -38,6 +39,22 @@ interface RouteInfo {
 }
 
 export default function MapPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-full items-center justify-center">
+          <Spinner />
+        </div>
+      }
+    >
+      <MapPageContent />
+    </Suspense>
+  );
+}
+
+function MapPageContent() {
+  const searchParams = useSearchParams();
+  const jobParam = searchParams.get("job");
   const [jobs, setJobs] = useState<MapJob[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedJob, setSelectedJob] = useState<MapJob | null>(null);
@@ -66,6 +83,23 @@ export default function MapPage() {
   useEffect(() => {
     fetchJobs();
   }, [fetchJobs]);
+
+  // Deep-link: select job from ?job= param
+  useEffect(() => {
+    if (jobParam && jobs.length > 0 && !selectedJob) {
+      const match = jobs.find((j) => j.$id === jobParam);
+      if (match) {
+        setSelectedJob(match);
+        // Ensure the job's status is in the filter
+        setStatusFilter((prev) => {
+          if (prev.has(match.status)) return prev;
+          const next = new Set(prev);
+          next.add(match.status);
+          return next;
+        });
+      }
+    }
+  }, [jobParam, jobs, selectedJob]);
 
   const allStatuses: JobStatus[] = [
     "scheduled",

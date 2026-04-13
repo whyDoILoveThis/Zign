@@ -31,9 +31,9 @@ export default function RootLayout({
       appearance={{
         baseTheme: dark,
         variables: {
-          colorBackground: "rgba(24, 24, 27, 0.85)",
-          colorInputBackground: "rgba(255, 255, 255, 0.05)",
-          colorPrimary: "#22c55e",
+          colorBackground: "rgba(8, 16, 20, 0.9)",
+          colorInputBackground: "rgba(13, 148, 136, 0.06)",
+          colorPrimary: "#0d9488",
           colorText: "#e2e8f0",
           colorTextSecondary: "#94a3b8",
           borderRadius: "0.75rem",

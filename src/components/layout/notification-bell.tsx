@@ -115,17 +115,17 @@ export function NotificationBell() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-lg dark:border-zinc-700 dark:bg-zinc-900 sm:w-96">
+        <div className="absolute right-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-xl border border-card-border bg-card-bg shadow-[0_8px_32px_rgba(13,148,136,0.08)] backdrop-blur-xl sm:w-96 dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-zinc-100 px-4 py-3 dark:border-zinc-800">
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          <div className="flex items-center justify-between border-b border-card-border px-4 py-3">
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
               Notifications
             </h3>
             {unreadCount > 0 && (
               <button
                 onClick={markAllAsRead}
                 disabled={loading}
-                className="flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-700 disabled:opacity-50 dark:text-blue-400"
+                className="flex items-center gap-1 text-xs font-medium text-teal-600 hover:text-teal-700 disabled:opacity-50 dark:text-teal-400"
               >
                 <CheckCheck className="h-3.5 w-3.5" />
                 Mark all read

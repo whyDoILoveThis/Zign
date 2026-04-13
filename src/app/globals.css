@@ -3,17 +3,29 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #fafafa;
-  --foreground: #09090b;
-  --sidebar-bg: #ffffff;
-  --sidebar-border: #e4e4e7;
+  --background: #f0fdfa;
+  --foreground: #0f172a;
+  --sidebar-bg: rgba(255, 255, 255, 0.7);
+  --sidebar-border: rgba(13, 148, 136, 0.12);
+  --card-bg: rgba(255, 255, 255, 0.65);
+  --card-border: rgba(13, 148, 136, 0.1);
+  --header-bg: rgba(255, 255, 255, 0.7);
+  --header-border: rgba(13, 148, 136, 0.1);
+  --accent: #0d9488;
+  --accent-soft: rgba(13, 148, 136, 0.08);
 }
 
 .dark {
-  --background: #09090b;
-  --foreground: #fafafa;
-  --sidebar-bg: #0a0a0a;
-  --sidebar-border: #1a1a1e;
+  --background: #050a0e;
+  --foreground: #e2e8f0;
+  --sidebar-bg: rgba(8, 16, 20, 0.85);
+  --sidebar-border: rgba(13, 148, 136, 0.12);
+  --card-bg: rgba(14, 25, 32, 0.8);
+  --card-border: rgba(13, 148, 136, 0.18);
+  --header-bg: rgba(8, 16, 20, 0.8);
+  --header-border: rgba(13, 148, 136, 0.1);
+  --accent: #14b8a6;
+  --accent-soft: rgba(20, 184, 166, 0.08);
 }
 
 @theme inline {
@@ -21,13 +33,23 @@
   --color-foreground: var(--foreground);
   --color-sidebar-bg: var(--sidebar-bg);
   --color-sidebar-border: var(--sidebar-border);
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-header-bg: var(--header-bg);
+  --color-header-border: var(--header-border);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #d4d4d8 transparent;
+  scrollbar-color: rgba(13, 148, 136, 0.2) transparent;
+}
+
+.dark * {
+  scrollbar-color: rgba(20, 184, 166, 0.15) transparent;
 }
 
 body {

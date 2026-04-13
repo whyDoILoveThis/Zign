@@ -185,7 +185,7 @@ export function ClientModal({ open, onClose, onSuccess, initialData }: Props) {
           rows={3}
         />
 
-        <div className="flex justify-end gap-3 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+        <div className="flex justify-end gap-3 border-t border-card-border pt-4">
           <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>

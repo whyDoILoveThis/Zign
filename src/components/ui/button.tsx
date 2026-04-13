@@ -31,15 +31,15 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           "active:scale-[0.98]",
           {
             primary:
-              "bg-zinc-900 text-white hover:bg-zinc-800 focus-visible:ring-zinc-900 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100",
+              "bg-linear-to-b from-teal-500 to-teal-600 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_1px_3px_rgba(13,148,136,0.4)] hover:from-teal-400 hover:to-teal-500 focus-visible:ring-teal-500",
             secondary:
-              "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 focus-visible:ring-zinc-500 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700",
+              "bg-accent-soft text-teal-700 hover:bg-teal-100 focus-visible:ring-teal-500 dark:text-teal-300 dark:hover:bg-teal-500/15",
             outline:
-              "border border-zinc-300 bg-transparent text-zinc-700 hover:bg-zinc-50 focus-visible:ring-zinc-500 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800/50",
+              "border border-card-border bg-transparent text-slate-700 hover:bg-accent-soft focus-visible:ring-teal-500 dark:text-slate-300 dark:hover:bg-accent-soft",
             ghost:
-              "bg-transparent text-zinc-700 hover:bg-zinc-100 focus-visible:ring-zinc-500 dark:text-zinc-300 dark:hover:bg-zinc-800",
+              "bg-transparent text-slate-700 hover:bg-accent-soft focus-visible:ring-teal-500 dark:text-slate-300 dark:hover:bg-accent-soft",
             danger:
-              "bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-600",
+              "bg-linear-to-b from-red-500 to-red-600 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_1px_3px_rgba(220,38,38,0.4)] hover:from-red-400 hover:to-red-500 focus-visible:ring-red-500",
           }[variant],
           {
             sm: "h-8 px-3 text-sm",

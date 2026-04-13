@@ -74,8 +74,8 @@ export default function SettingsPage() {
               className={cn(
                 "flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors",
                 activeTab === tab.key
-                  ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
-                  : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800",
+                  ? "bg-teal-500/12 text-teal-700 dark:text-teal-300 shadow-[inset_0_1px_0_rgba(13,148,136,0.1)]"
+                  : "text-slate-600 hover:bg-accent-soft dark:text-slate-400",
               )}
             >
               <tab.icon className="h-4 w-4" />

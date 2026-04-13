@@ -78,14 +78,14 @@ export function MobileNav() {
             : "-bottom-full opacity-0 pointer-events-none",
         )}
       >
-        <div className="rounded-t-2xl border border-zinc-200 bg-white px-4 pb-3 pt-3 shadow-lg dark:border-zinc-700 dark:bg-zinc-900">
+        <div className="rounded-t-2xl border border-card-border bg-card-bg px-4 pb-3 pt-3 shadow-lg backdrop-blur-xl">
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+            <span className="text-sm font-semibold text-slate-900 dark:text-slate-50">
               More
             </span>
             <button
               onClick={() => setMoreOpen(false)}
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded-lg p-1.5 text-slate-400 hover:bg-accent-soft"
             >
               <X className="h-4 w-4" />
             </button>
@@ -103,8 +103,8 @@ export function MobileNav() {
                   className={cn(
                     "flex flex-col items-center gap-1.5 rounded-xl px-2 py-3 text-[11px] font-medium transition-colors",
                     isActive
-                      ? "bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-50"
-                      : "text-zinc-500 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50",
+                      ? "bg-teal-500/10 text-teal-700 dark:text-teal-300"
+                      : "text-slate-500 hover:bg-accent-soft dark:text-slate-400",
                   )}
                 >
                   <item.icon className="h-5 w-5" />
@@ -117,7 +117,7 @@ export function MobileNav() {
       </div>
 
       {/* Bottom tab bar */}
-      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-zinc-200 bg-white/95 backdrop-blur-lg dark:border-zinc-800 dark:bg-zinc-900/95 md:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-header-border bg-header-bg backdrop-blur-lg md:hidden">
         <div className="flex items-center justify-around px-2 pb-[env(safe-area-inset-bottom)]">
           {primaryTabs.map((item) => {
             const isActive =
@@ -131,8 +131,8 @@ export function MobileNav() {
                 className={cn(
                   "flex flex-1 flex-col items-center gap-0.5 py-2.5 text-[10px] font-medium transition-colors",
                   isActive
-                    ? "text-zinc-900 dark:text-zinc-50"
-                    : "text-zinc-400 dark:text-zinc-500",
+                    ? "text-teal-600 dark:text-teal-400"
+                    : "text-slate-400 dark:text-slate-500",
                 )}
               >
                 <item.icon
@@ -150,8 +150,8 @@ export function MobileNav() {
             className={cn(
               "flex flex-1 flex-col items-center gap-0.5 py-2.5 text-[10px] font-medium transition-colors",
               moreOpen || isMoreActive
-                ? "text-zinc-900 dark:text-zinc-50"
-                : "text-zinc-400 dark:text-zinc-500",
+                ? "text-teal-600 dark:text-teal-400"
+                : "text-slate-400 dark:text-slate-500",
             )}
           >
             <MoreHorizontal

@@ -55,8 +55,8 @@ export function Modal({
       {/* Panel */}
       <div
         className={cn(
-          "relative z-10 mx-4 w-full rounded-2xl border border-zinc-200 bg-white shadow-2xl",
-          "dark:border-zinc-700 dark:bg-zinc-900",
+          "relative z-10 mx-4 w-full rounded-2xl border border-card-border bg-card-bg shadow-[0_8px_32px_rgba(13,148,136,0.1)] backdrop-blur-xl",
+          "dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]",
           "animate-in fade-in zoom-in-95 duration-200",
           "max-h-[90vh] overflow-y-auto",
           {
@@ -69,7 +69,7 @@ export function Modal({
       >
         {/* Header */}
         {(title || description) && (
-          <div className="flex items-start justify-between border-b border-zinc-200 p-6 dark:border-zinc-800">
+          <div className="flex items-start justify-between border-b border-card-border p-6">
             <div>
               {title && (
                 <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
@@ -84,7 +84,7 @@ export function Modal({
             </div>
             <button
               onClick={onClose}
-              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              className="rounded-lg p-1.5 text-slate-400 hover:bg-accent-soft hover:text-slate-600 dark:hover:text-slate-300"
             >
               <X className="h-5 w-5" />
             </button>

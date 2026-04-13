@@ -46,19 +46,17 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        "hidden h-screen flex-col border-r border-sidebar-border bg-sidebar-bg transition-all duration-200 md:flex",
+        "hidden h-screen flex-col border-r border-sidebar-border bg-sidebar-bg backdrop-blur-md transition-all duration-200 md:flex",
         collapsed ? "w-[68px]" : "w-[240px]",
       )}
     >
       {/* Logo */}
       <div className="flex h-16 items-center gap-3 border-b border-sidebar-border px-4">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-zinc-900 dark:bg-white">
-          <span className="text-sm font-bold text-white dark:text-zinc-900">
-            Z
-          </span>
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-linear-to-b from-teal-400 to-teal-600 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_2px_6px_rgba(13,148,136,0.35)]">
+          <span className="text-sm font-bold text-white">Z</span>
         </div>
         {!collapsed && (
-          <span className="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-slate-50">
             Zign
           </span>
         )}
@@ -78,8 +76,8 @@ export function Sidebar() {
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150",
                 isActive
-                  ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
-                  : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
+                  ? "bg-teal-500/12 text-teal-700 dark:text-teal-300 shadow-[inset_0_1px_0_rgba(13,148,136,0.1)]"
+                  : "text-slate-600 hover:bg-accent-soft hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100",
               )}
             >
               <item.icon className="h-5 w-5 shrink-0" />
@@ -93,7 +91,7 @@ export function Sidebar() {
       <div className="border-t border-sidebar-border p-3">
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="flex w-full items-center justify-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+          className="flex w-full items-center justify-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-500 transition-colors hover:bg-accent-soft hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300"
         >
           {collapsed ? (
             <ChevronRight className="h-5 w-5" />

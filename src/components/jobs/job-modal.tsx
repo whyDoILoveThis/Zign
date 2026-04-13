@@ -167,8 +167,8 @@ export function JobModal({ open, onClose, onSuccess, initialData }: Props) {
         />
 
         {/* Address */}
-        <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-          <p className="mb-3 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+        <div className="rounded-lg border border-card-border p-4">
+          <p className="mb-3 text-sm font-medium text-slate-700 dark:text-slate-300">
             Installation Address
           </p>
           <div className="space-y-3">
@@ -245,8 +245,8 @@ export function JobModal({ open, onClose, onSuccess, initialData }: Props) {
 
         {/* Assign Installers */}
         {installers.length > 0 && (
-          <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-            <p className="mb-3 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+          <div className="rounded-lg border border-card-border p-4">
+            <p className="mb-3 text-sm font-medium text-slate-700 dark:text-slate-300">
               Assign Installers
             </p>
             <div className="space-y-2 max-h-40 overflow-y-auto">
@@ -287,7 +287,7 @@ export function JobModal({ open, onClose, onSuccess, initialData }: Props) {
           </div>
         )}
 
-        <div className="flex justify-end gap-3 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+        <div className="flex justify-end gap-3 border-t border-card-border pt-4">
           <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>

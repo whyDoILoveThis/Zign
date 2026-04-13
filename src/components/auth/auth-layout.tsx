@@ -73,14 +73,14 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
       />
 
       {/* Gradient orbs */}
-      <div className="pointer-events-none absolute left-1/4 top-0 h-150 w-150 -translate-x-1/2 rounded-full bg-emerald-500/10 blur-[128px]" />
-      <div className="pointer-events-none absolute bottom-0 right-1/4 h-100 w-100 translate-x-1/2 rounded-full bg-sky-500/8 blur-[100px]" />
+      <div className="pointer-events-none absolute left-1/4 top-0 h-150 w-150 -translate-x-1/2 rounded-full bg-teal-500/10 blur-[128px]" />
+      <div className="pointer-events-none absolute bottom-0 right-1/4 h-100 w-100 translate-x-1/2 rounded-full bg-cyan-500/8 blur-[100px]" />
 
       {/* Nav */}
       <nav className="relative z-10 flex items-center justify-between px-6 py-5 md:px-12">
         <Link href="/sign-in" className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white">
-            <span className="text-sm font-extrabold text-zinc-900">Z</span>
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-b from-teal-400 to-teal-600 shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_2px_8px_rgba(13,148,136,0.4)]">
+            <span className="text-sm font-extrabold text-white">Z</span>
           </div>
           <span className="text-lg font-bold tracking-tight">Zign</span>
         </Link>
@@ -108,9 +108,9 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
           {/* Left — Marketing */}
           <div className="flex flex-col justify-center py-10 lg:sticky lg:top-20 lg:w-1/2 lg:py-20">
             {/* Badge */}
-            <div className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3.5 py-1.5">
-              <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs font-medium text-emerald-300">
+            <div className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-teal-500/20 bg-teal-500/10 px-3.5 py-1.5">
+              <div className="h-1.5 w-1.5 rounded-full bg-teal-400 animate-pulse" />
+              <span className="text-xs font-medium text-teal-300">
                 Operations platform for sign companies
               </span>
             </div>
@@ -118,7 +118,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
             {/* Hero */}
             <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight md:text-5xl lg:text-[3.5rem]">
               Sign operations,{" "}
-              <span className="bg-linear-to-r from-emerald-400 via-sky-400 to-emerald-400 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-teal-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
                 simplified
               </span>
             </h1>
@@ -145,7 +145,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
                   key={f.title}
                   className="group rounded-xl border border-white/5 bg-white/2 p-4 transition-all hover:border-white/10 hover:bg-white/4"
                 >
-                  <div className="mb-2.5 flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-zinc-400 transition-colors group-hover:bg-emerald-500/10 group-hover:text-emerald-400">
+                  <div className="mb-2.5 flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-zinc-400 transition-colors group-hover:bg-teal-500/10 group-hover:text-teal-400">
                     <f.icon className="h-4.5 w-4.5" />
                   </div>
                   <h3 className="text-sm font-semibold text-zinc-200">
@@ -169,7 +169,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
       {/* Mobile features — grid */}
       <div className="relative z-10 px-6 pb-16 lg:hidden">
         <div className="mb-4 flex items-center gap-2">
-          <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+          <CheckCircle2 className="h-4 w-4 text-teal-400" />
           <span className="text-sm font-semibold text-zinc-300">
             Everything you need
           </span>
@@ -180,7 +180,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
               key={f.title}
               className="rounded-xl border border-white/5 bg-white/2 p-4"
             >
-              <f.icon className="mb-2 h-5 w-5 text-emerald-400" />
+              <f.icon className="mb-2 h-5 w-5 text-teal-400" />
               <h3 className="text-sm font-semibold text-zinc-200">{f.title}</h3>
               <p className="mt-1 text-xs leading-relaxed text-zinc-500">
                 {f.description}

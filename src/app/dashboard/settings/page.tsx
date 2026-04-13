@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Button, Card, CardHeader, Input } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/components/theme-provider";
 
 type Tab = "company" | "maps" | "notifications" | "appearance" | "demo";
 
@@ -279,16 +280,16 @@ function NotificationSettings() {
 }
 
 function AppearanceSettings() {
-  const [theme, setTheme] = useState("system");
+  const { theme, setTheme } = useTheme();
 
   return (
     <Card>
       <CardHeader title="Theme" />
       <div className="mt-4 grid grid-cols-3 gap-3">
         {[
-          { id: "light", label: "Light" },
-          { id: "dark", label: "Dark" },
-          { id: "system", label: "System" },
+          { id: "light" as const, label: "Light" },
+          { id: "dark" as const, label: "Dark" },
+          { id: "system" as const, label: "System" },
         ].map((t) => (
           <button
             key={t.id}

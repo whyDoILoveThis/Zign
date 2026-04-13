@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   ChevronLeft,
@@ -25,6 +26,7 @@ import {
   isToday,
   addMonths,
   subMonths,
+  parseISO,
 } from "date-fns";
 
 interface CalendarJob {
@@ -39,10 +41,23 @@ interface CalendarJob {
 }
 
 export default function SchedulePage() {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const searchParams = useSearchParams();
+  const dateParam = searchParams.get("date");
+
+  const [currentMonth, setCurrentMonth] = useState(() => {
+    if (dateParam) {
+      try { return parseISO(dateParam); } catch { /* ignore */ }
+    }
+    return new Date();
+  });
   const [jobs, setJobs] = useState<CalendarJob[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(() => {
+    if (dateParam) {
+      try { return parseISO(dateParam); } catch { /* ignore */ }
+    }
+    return null;
+  });
 
   const fetchJobs = useCallback(async () => {
     setLoading(true);

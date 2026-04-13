@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     const clientIds = [...new Set(jobs.map((j) => j.client_id).filter(Boolean))];
     const jobIds = jobs.map((j) => j.$id);
 
-    const [clientsResult, assignmentsResult] = await Promise.all([
+    const [clientsResult, assignmentsResult, profilesResult, attachmentsResult] = await Promise.all([
       clientIds.length > 0
         ? databases.listDocuments(DATABASE_ID, COLLECTIONS.clients, [
             Query.limit(500),
@@ -58,20 +58,37 @@ export async function GET(request: NextRequest) {
             Query.limit(5000),
           ])
         : Promise.resolve({ documents: [] }),
+      databases.listDocuments(DATABASE_ID, COLLECTIONS.profiles, [
+        Query.equal("role", "installer"),
+        Query.limit(500),
+      ]),
+      jobIds.length > 0
+        ? databases.listDocuments(DATABASE_ID, COLLECTIONS.job_attachments, [
+            Query.limit(5000),
+          ])
+        : Promise.resolve({ documents: [] }),
     ]);
 
     const clientMap = new Map(clientsResult.documents.map((c) => [c.$id, c]));
+    const profileMap = new Map(profilesResult.documents.map((p) => [p.$id, p]));
     const assignmentsByJob = new Map<string, typeof assignmentsResult.documents>();
     for (const a of assignmentsResult.documents) {
       const existing = assignmentsByJob.get(a.job_id) || [];
-      existing.push(a);
+      existing.push({ ...a, installer: profileMap.get(a.installer_id) || null });
       assignmentsByJob.set(a.job_id, existing);
+    }
+    const attachmentsByJob = new Map<string, typeof attachmentsResult.documents>();
+    for (const a of attachmentsResult.documents) {
+      const existing = attachmentsByJob.get(a.job_id) || [];
+      existing.push(a);
+      attachmentsByJob.set(a.job_id, existing);
     }
 
     let enrichedJobs = jobs.map((job) => ({
       ...job,
       clients: clientMap.get(job.client_id) || null,
       job_assignments: assignmentsByJob.get(job.$id) || [],
+      attachments: attachmentsByJob.get(job.$id) || [],
     }));
 
     // If filtering by installer, filter in-memory
@@ -98,6 +115,7 @@ export async function GET(request: NextRequest) {
         ...job,
         clients: clientMap.get(job.client_id) || null,
         job_assignments: assignmentsByJob.get(job.$id) || [],
+        attachments: attachmentsByJob.get(job.$id) || [],
       }));
     }
 

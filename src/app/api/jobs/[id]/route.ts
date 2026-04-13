@@ -39,10 +39,29 @@ export async function GET(
       ]),
     ]);
 
+    // Resolve installer profiles for assignments
+    const installerIds = [
+      ...new Set(assignmentsResult.documents.map((a) => a.installer_id).filter(Boolean)),
+    ];
+    let profileMap = new Map<string, Record<string, unknown>>();
+    if (installerIds.length > 0) {
+      const { documents: profiles } = await databases.listDocuments(
+        DATABASE_ID,
+        COLLECTIONS.profiles,
+        [Query.limit(500)]
+      );
+      profileMap = new Map(profiles.map((p) => [p.$id, p]));
+    }
+
+    const assignments = assignmentsResult.documents.map((a) => ({
+      ...a,
+      installer: profileMap.get(a.installer_id) || null,
+    }));
+
     const jobWithDetails = {
       ...job,
       clients: clientResult,
-      assignments: assignmentsResult.documents,
+      assignments,
       notes_list: notesResult.documents,
       attachments: attachmentsResult.documents,
     };

@@ -10,10 +10,13 @@ import {
   User,
   Building2,
   Phone,
+  Mail,
   ExternalLink,
   MessageSquare,
   Send,
   Paperclip,
+  Info,
+  Pencil,
 } from "lucide-react";
 import {
   Button,
@@ -24,6 +27,7 @@ import {
 } from "@/components/ui";
 import { PageLoader } from "@/components/ui/spinner";
 import { FileUpload } from "@/components/jobs/file-upload";
+import { JobModal } from "@/components/jobs/job-modal";
 import { formatDate, formatDateTime } from "@/lib/utils";
 import type { JobStatus, AttachmentCategory } from "@/types";
 
@@ -51,7 +55,19 @@ interface JobDetail {
     email: string | null;
     address: string;
   };
-  assignments: { $id: string; installer_id: string; assigned_by: string }[];
+  assignments: {
+    $id: string;
+    installer_id: string;
+    assigned_by: string;
+    installer?: {
+      $id: string;
+      first_name: string;
+      last_name: string;
+      email: string;
+      phone: string | null;
+      role: string;
+    } | null;
+  }[];
   notes_list: {
     $id: string;
     author_id: string;
@@ -77,6 +93,62 @@ const statusOptions: { value: JobStatus; label: string }[] = [
   { value: "cancelled", label: "Cancelled" },
 ];
 
+function InstallerRow({
+  assignment,
+}: {
+  assignment: JobDetail["assignments"][number];
+}) {
+  const [open, setOpen] = useState(false);
+  const inst = assignment.installer;
+  const name = inst
+    ? `${inst.first_name} ${inst.last_name}`
+    : assignment.installer_id;
+
+  return (
+    <div>
+      <div className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400">
+          {inst ? inst.first_name[0] : "?"}
+        </div>
+        <span className="flex-1 truncate font-medium">{name}</span>
+        {inst && (
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="flex h-6 w-6 items-center justify-center rounded-md text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+          >
+            <Info className="h-3.5 w-3.5" />
+          </button>
+        )}
+      </div>
+      {open && inst && (
+        <div className="ml-9 mt-1.5 space-y-1 rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-xs dark:border-zinc-700 dark:bg-zinc-800/50">
+          {inst.email && (
+            <div className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
+              <Mail className="h-3 w-3" />
+              <a href={`mailto:${inst.email}`} className="hover:underline">
+                {inst.email}
+              </a>
+            </div>
+          )}
+          {inst.phone && (
+            <div className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
+              <Phone className="h-3 w-3" />
+              <a href={`tel:${inst.phone}`} className="hover:underline">
+                {inst.phone}
+              </a>
+            </div>
+          )}
+          <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-500">
+            <User className="h-3 w-3" />
+            <span className="capitalize">{inst.role}</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function JobDetailPage({
   params,
 }: {
@@ -88,6 +160,7 @@ export default function JobDetailPage({
   const [newNote, setNewNote] = useState("");
   const [sendingNote, setSendingNote] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   const fetchJob = useCallback(async () => {
     try {
@@ -190,8 +263,12 @@ export default function JobDetailPage({
           </div>
         </div>
 
-        {/* Status changer */}
+        {/* Actions */}
         <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => setEditModalOpen(true)}>
+            <Pencil className="h-4 w-4" />
+            Edit
+          </Button>
           <select
             value={job.status}
             onChange={(e) => updateStatus(e.target.value as JobStatus)}
@@ -373,6 +450,15 @@ export default function JobDetailPage({
                   Est. {job.estimated_duration_minutes} minutes
                 </p>
               )}
+              {job.scheduled_date && (
+                <Link
+                  href={`/dashboard/schedule?date=${job.scheduled_date}`}
+                  className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-green-600 hover:text-green-500 dark:text-green-400 dark:hover:text-green-300"
+                >
+                  <Calendar className="h-3.5 w-3.5" />
+                  View on calendar
+                </Link>
+              )}
             </div>
           </Card>
 
@@ -383,15 +469,7 @@ export default function JobDetailPage({
               {job.assignments?.length > 0 ? (
                 <div className="space-y-2">
                   {job.assignments.map((a) => (
-                    <div
-                      key={a.$id}
-                      className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300"
-                    >
-                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-zinc-200 text-xs font-medium dark:bg-zinc-700">
-                        <User className="h-3.5 w-3.5" />
-                      </div>
-                      <span>{a.installer_id}</span>
-                    </div>
+                    <InstallerRow key={a.$id} assignment={a} />
                   ))}
                 </div>
               ) : (
@@ -401,6 +479,33 @@ export default function JobDetailPage({
           </Card>
         </div>
       </div>
+
+      {/* Edit modal */}
+      {job && (
+        <JobModal
+          open={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          onSuccess={() => {
+            setEditModalOpen(false);
+            fetchJob();
+          }}
+          initialData={{
+            $id: job.$id,
+            title: job.title,
+            description: job.description || "",
+            client_id: job.clients?.$id || "",
+            address: job.address,
+            city: job.city || "",
+            state: job.state || "",
+            postal_code: job.postal_code || "",
+            scheduled_date: job.scheduled_date || "",
+            scheduled_time: job.scheduled_time || "",
+            estimated_duration_minutes: job.estimated_duration_minutes?.toString() || "",
+            notes: job.notes || "",
+            installer_ids: job.assignments?.map((a) => a.installer_id) || [],
+          }}
+        />
+      )}
     </div>
   );
 }
